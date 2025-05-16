@@ -1,0 +1,17 @@
+# The contents of this file are used by an IBM internal pipeline to onboard solutions to the IBM catalog
+---
+apiVersion: v1
+offerings:
+  - name: deploy-arch-ibm-cos-config
+    kind: solution
+    catalog_id: tbc
+    offering_id: tbc
+    variations:
+      - name: replication
+        mark_ready: true
+        install_type: fullstack
+      - name: static-website-configurator
+        mark_ready: true
+        install_type: extension
+        pre_validation: "tests/scripts/pre-validation.sh"
+        post_validation: "tests/scripts/post-validation.sh"
