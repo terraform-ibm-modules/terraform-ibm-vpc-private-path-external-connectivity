@@ -1,7 +1,7 @@
 {
     "products": [
         {
-            "name": "deploy-arch-ibm-is-private-path-service-gateway-external-connectivity",
+            "name": "deploy-arch-ibm-is-private-path-external-connectivity",
             "label": "Cloud essentials for private-path external connectivity",
             "product_kind": "solution",
             "tags": [
