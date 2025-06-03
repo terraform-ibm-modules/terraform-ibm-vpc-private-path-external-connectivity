@@ -1,4 +1,4 @@
-# Sample deployable architectures
+# VPC Private-path External Connectivity
 
 [![Incubating (Not yet consumable)](https://img.shields.io/badge/status-Incubating%20(Not%20yet%20consumable)-red)](https://terraform-ibm-modules.github.io/documentation/#/badge-status)
 [![latest release](https://img.shields.io/github/v/release/terraform-ibm-modules/sample-deployable-architectures?logo=GitHub&sort=semver)](https://github.com/terraform-ibm-modules/sample-deployable-architectures/releases/latest)
@@ -7,8 +7,7 @@
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 This repository contains the following sample deployable architectures:
-- [Sample terraform-based deployable architecture without dependencies (fullstack) - COS bucket replication](./solutions/tf-fullstack-da)
-- [Sample terraform-based deployable architecture with dependencies (extension) - Serving static websites with IBM Cloud Object Storage](./solutions/tf-extension-da)
+- [Cloud essentials for private-path external connectivity](./solutions/fully-configurable)
 
 :exclamation: **Important:** These solutions are not intended to be called by other modules because they contain provider configurations and are not compatible with the `for_each`, `count`, and `depends_on` Terraform arguments. For more information, see [Providers Within Modules](https://developer.hashicorp.com/terraform/language/modules/develop/providers).
 

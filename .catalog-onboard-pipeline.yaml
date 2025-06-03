@@ -7,11 +7,8 @@ offerings:
     catalog_id: tbc
     offering_id: tbc
     variations:
-      - name: replication
-        mark_ready: true
-        install_type: fullstack
       - name: static-website-configurator
         mark_ready: true
-        install_type: extension
-        pre_validation: "tests/scripts/pre-validation.sh"
-        post_validation: "tests/scripts/post-validation.sh"
+        install_type: fullstack
+        pre_validation: "tests/scripts/pre-validation-private-path-vpc.sh"
+        post_validation: "tests/scripts/post-validation-private-path-vpc.sh"
