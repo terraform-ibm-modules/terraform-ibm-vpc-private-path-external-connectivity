@@ -52,7 +52,6 @@ data "ibm_is_image" "image" {
 }
 
 resource "ibm_is_instance" "vsi" {
-  # count          = 2
   name           = "${var.prefix}-vsi-0"
   image          = data.ibm_is_image.image.id
   resource_group = module.mock_resource_group.resource_group_id

@@ -21,9 +21,3 @@ variable "resource_tags" {
   description = "Optional list of tags to be added to created resources."
   default     = ["private-path"]
 }
-
-variable "resource_group" {
-  type        = string
-  description = "The name of an existing resource group to provision resources in. If not specified, a new resource group is created with the `prefix` variable."
-  default     = null
-}

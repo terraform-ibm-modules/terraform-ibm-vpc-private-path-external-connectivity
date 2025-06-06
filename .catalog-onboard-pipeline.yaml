@@ -4,8 +4,8 @@ apiVersion: v1
 offerings:
   - name: deploy-arch-ibm-is-private-path-external-connectivity
     kind: solution
-    catalog_id:
-    offering_id:
+    catalog_id: 7df1e4ca-d54c-4fd0-82ce-3d13247308cd
+    offering_id: 7ca9901b-fe77-4c1e-9036-b9cf49e754f5
     variations:
       - name: fully-configurable
         mark_ready: true
