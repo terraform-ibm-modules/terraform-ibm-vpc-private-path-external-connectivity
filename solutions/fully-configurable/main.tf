@@ -56,7 +56,8 @@ resource "ibm_is_lb_listener" "alb_frontend_listener" {
 }
 
 module "private_path" {
-  source            = "git::https://github.com/terraform-ibm-modules/terraform-ibm-vpc-private-path.git?ref=ref"
+  source            = "terraform-ibm-modules/vpc-private-path/ibm"
+  version           = "1.0.0"
   resource_group_id = module.resource_group.resource_group_id
   subnet_id         = local.subnet_id
   tags              = var.private_path_tags

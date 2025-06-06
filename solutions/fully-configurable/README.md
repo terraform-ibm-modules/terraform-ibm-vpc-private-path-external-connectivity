@@ -33,7 +33,7 @@ This architecture consists of:
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_private_path"></a> [private\_path](#module\_private\_path) | git::https://github.com/terraform-ibm-modules/terraform-ibm-vpc-private-path.git | ref |
+| <a name="module_private_path"></a> [private\_path](#module\_private\_path) | terraform-ibm-modules/vpc-private-path/ibm | 1.0.0 |
 | <a name="module_resource_group"></a> [resource\_group](#module\_resource\_group) | terraform-ibm-modules/resource-group/ibm | 1.2.0 |
 
 ### Resources
