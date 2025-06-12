@@ -31,7 +31,7 @@ TF_VARS_FILE="terraform.tfvars"
     existing_subnet_id_var_name="existing_subnet_id"
     existing_subnet_id_var_value=$(terraform output -state=terraform.tfstate -raw existing_subnet_id)
     alb_member_ip_address_var_name="application_loadbalancer_pool_member_ip_address"
-    alb_member_ip_address_var_value=$(terraform output -state=terraform.tfstate -json member_ip_address)
+    alb_member_ip_address_var_value=$(terraform output -state=terraform.tfstate -json member_ip_address_list)
 
     echo "Appending '${resource_group_name_var_name}' and '${existing_subnet_id_var_name}' input variable values to ${JSON_FILE}.."
 
