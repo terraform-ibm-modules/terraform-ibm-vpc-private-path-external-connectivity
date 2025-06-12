@@ -11,7 +11,7 @@ This repository contains the following sample deployable architectures:
 
 :exclamation: **Important:** These solutions are not intended to be called by other modules because they contain provider configurations and are not compatible with the `for_each`, `count`, and `depends_on` Terraform arguments. For more information, see [Providers Within Modules](https://developer.hashicorp.com/terraform/language/modules/develop/providers).
 
-The repository is also configured with the following things:
+The repository includes the following artefacts for configuration.
 - [A GitHub Actions workflow to run the common CI pipeline for Terraform](./.github/workflows). For more information, see the common-pipeline-assets [readme file](https://github.com/terraform-ibm-modules/common-pipeline-assets/blob/main/README.md)).
 - A [common-dev-assets](./common-dev-assets) Git submodule with common automation that is used for CI and development. For more information, see [Local development setup](https://terraform-ibm-modules.github.io/documentation/#/local-dev-setup)).
 - An [ibm_catalog.json](ibm_catalog.json) file that is used for onboarding the sample deployable architectures to the IBM Cloud catalog.

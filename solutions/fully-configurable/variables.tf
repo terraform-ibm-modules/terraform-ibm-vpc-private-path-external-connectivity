@@ -76,13 +76,13 @@ variable "existing_subnet_id" {
 variable "application_loadbalancer_pool_member_ip_address" {
   type        = list(string)
   default     = []
-  description = "value"
+  description = "List of IP address of the application load balancer pool members."
 }
 
 variable "application_loadbalancer_type" {
   type        = string
   default     = "private"
-  description = "value"
+  description = "The type of the application load balancer. Supported values are `private`, `public`."
 }
 
 variable "application_loadbalancer_pool_algorithm" {

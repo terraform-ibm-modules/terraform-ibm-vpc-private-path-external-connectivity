@@ -22,14 +22,14 @@
                 "solution"
             ],
             "short_description": "Creates and configures a VPC Private Path service for external connectivity.",
-            "long_description": "This solution is used to provision and configure a VPC Private Path service for external connectivity.",
+            "long_description": "You can provision and configure a VPC Private Path service for external connectivity using this solution.",
             "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/blob/main/solutions/fully-configurable/README.md",
             "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/main/images/private_path.svg",
             "provider_name": "IBM",
             "features": [
                 {
-                    "title": "Creates a Application load balancer.",
-                    "description": "Sets up an IBM Application load balancer with a backend pool which will connect to the external service."
+                    "title": "Creates an Application load balancer.",
+                    "description": "Sets up an IBM Application load balancer with a backend pool to connect to the external service."
                 },
                 {
                     "title": "Creates a Private Path service.",
@@ -37,7 +37,7 @@
                 },
                 {
                     "title": "Sets up a Private Path Network load balancer.",
-                    "description": "Sets up an IBM Private Path Network load balancer with a backend pool which will connect to the VPE Gateway."
+                    "description": "Sets up an IBM Private Path Network load balancer with a backend pool to connect to the VPE Gateway."
                 }
             ],
             "flavors": [
@@ -213,7 +213,17 @@
                             "key": "application_loadbalancer_pool_protocol"
                         },
                         {
-                            "key": "application_loadbalancer_type"
+                            "key": "application_loadbalancer_type",
+                            "options": [
+                                {
+                                    "displayname": "public",
+                                    "value": "public"
+                                },
+                                {
+                                    "displayname": "private",
+                                    "value": "private"
+                                }
+                            ]
                         },
                         {
                             "key": "network_loadbalancer_listener_accept_proxy_protocol"
@@ -250,7 +260,7 @@
                         "features": [
                             {
                                 "title": "Creates a Application load balancer.",
-                                "description": "Sets up an IBM Application load balancer with a backend pool which will connect to the external service."
+                                "description": "Sets up an IBM Application load balancer with a backend pool to connect to the external service."
                             },
                             {
                                 "title": "Creates a Private Path service.",
@@ -258,7 +268,7 @@
                             },
                             {
                                 "title": "Sets up a Private Path Network load balancer.",
-                                "description": "Sets up an IBM Private Path Network load balancer with a backend pool which will connect to the VPE Gateway."
+                                "description": "Sets up an IBM Private Path Network load balancer with a backend pool to connect to the VPE Gateway."
                             }
                         ],
                         "diagrams": [
@@ -268,7 +278,7 @@
                                     "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-vpc-private-path/main/reference-architecture/private-path.svg",
                                     "type": "image/svg+xml"
                                 },
-                                "description": "This solution deploys a Private path service on IBM Cloud, which facilitates secure, private connectivity between IBM Cloud Virtual Private Cloud (VPC) environments and on-premises networks or external services. This solution automates the deployment of IBM Cloud's Private Path and Application Load Balancer (ALB) services, enabling enterprises to establish robust, private, and scalable network connections."
+                                "description": "You can deploy a Private path service on IBM Cloud to facilitate secure, private connectivity between IBM Cloud Virtual Private Cloud (VPC) environments and on-premises networks or external services using this solution. This solution automates the deployment of IBM Cloud's Private Path and Application Load Balancer (ALB) services to enable enterprises to establish robust, private, and scalable network connections."
                             }
                         ]
                     },

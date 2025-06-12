@@ -15,6 +15,6 @@ CRA_TARGETS:
     CRA_ENVIRONMENT_VARIABLES: # An optional map of environment variables for CRA, where the key is the variable name and value is the value. Useful for providing TF_VARs.
       TF_VAR_prefix: "mock"
       TF_VAR_region: "us-south"
-      TF_VAR_application_loadbalancer_pool_member_ip_address: ["159.23.92.5"]
+      TF_VAR_application_loadbalancer_pool_member_ip_address: ["159.23.92.5", "159.23.92.6"]
       TF_VAR_private_path_service_endpoints: ["vpc-pp.example.com"]
       TF_VAR_existing_vpc_id: "r006-a95450db-e5c3-49fb-b630-31aea1deb8d8"
