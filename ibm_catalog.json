@@ -1,0 +1,347 @@
+{
+    "products": [
+        {
+            "name": "deploy-arch-ibm-is-private-path-external-connectivity",
+            "label": "[Add-ons Beta] Cloud essentials for private-path external connectivity",
+            "product_kind": "solution",
+            "tags": [
+                "ibm_created",
+                "target_terraform",
+                "terraform",
+                "solution",
+                "network"
+            ],
+            "keywords": [
+                "vpc",
+                "private path",
+                "private",
+                "nlb",
+                "IaC",
+                "infrastructure as code",
+                "terraform",
+                "solution"
+            ],
+            "short_description": "Creates and configures a VPC Private Path service for external connectivity.",
+            "long_description": "You can provision and configure a VPC Private Path service for external connectivity using this solution.",
+            "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/blob/main/solutions/fully-configurable/README.md",
+            "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/main/images/private_path.svg",
+            "provider_name": "IBM",
+            "features": [
+                {
+                    "title": "Creates an Application load balancer.",
+                    "description": "Sets up an IBM Application load balancer with a backend pool to connect to the external service."
+                },
+                {
+                    "title": "Creates a Private Path service.",
+                    "description": "Creates an IBM VPC Private Path service."
+                },
+                {
+                    "title": "Sets up a Private Path Network load balancer.",
+                    "description": "Sets up an IBM Private Path Network load balancer with a backend pool to connect to the VPE Gateway."
+                }
+            ],
+            "flavors": [
+                {
+                    "label": "Fully configurable",
+                    "name": "fully-configurable",
+                    "install_type": "fullstack",
+                    "working_directory": "solutions/fully-configurable",
+                    "compliance": {
+                        "authority": "scc-v3",
+                        "profiles": [
+                            {
+                                "profile_name": "IBM Cloud Framework for Financial Services",
+                                "profile_version": "1.7.0"
+                            }
+                        ]
+                    },
+                    "iam_permissions": [
+                        {
+                            "service_name": "is",
+                            "role_crns": [
+                                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                                "crn:v1:bluemix:public:iam::::role:Editor"
+                            ]
+                        }
+                    ],
+                    "configuration": [
+                        {
+                            "key": "ibmcloud_api_key"
+                        },
+                        {
+                            "custom_config": {
+                                "config_constraints": {
+                                    "generationType": "2"
+                                },
+                                "grouping": "deployment",
+                                "original_grouping": "deployment",
+                                "type": "vpc_region"
+                            },
+                            "key": "region",
+                            "required": true
+                        },
+                        {
+                            "key": "prefix",
+                            "required": true
+                        },
+                        {
+                            "key": "existing_resource_group_name",
+                            "required": true,
+                            "custom_config": {
+                                "type": "resource_group",
+                                "grouping": "deployment",
+                                "original_grouping": "deployment",
+                                "config_constraints": {
+                                    "identifier": "rg_name"
+                                }
+                            }
+                        },
+                        {
+                            "key": "existing_vpc_id"
+                        },
+                        {
+                            "key": "existing_subnet_id",
+                            "required": true,
+                            "custom_config": {
+                                "type": "platform_resource",
+                                "grouping": "deployment",
+                                "original_grouping": "deployment",
+                                "config_constraints": {
+                                    "resourceType": "subnet",
+                                    "selection": "single_select",
+                                    "valueType": "id"
+                                }
+                            }
+                        },
+                        {
+                            "key": "private_path_service_endpoints",
+                            "required": true,
+                            "custom_config": {
+                                "grouping": "deployment",
+                                "original_grouping": "deployment",
+                                "config_constraints": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        {
+                            "key": "private_path_tags",
+                            "custom_config": {
+                                "grouping": "deployment",
+                                "original_grouping": "deployment",
+                                "config_constraints": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        {
+                            "key": "private_path_access_tags",
+                            "custom_config": {
+                                "grouping": "deployment",
+                                "original_grouping": "deployment",
+                                "config_constraints": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        {
+                            "key": "private_path_name"
+                        },
+                        {
+                            "key": "private_path_default_access_policy",
+                            "options": [
+                                {
+                                    "displayname": "Review",
+                                    "value": "review"
+                                },
+                                {
+                                    "displayname": "Permit",
+                                    "value": "permit"
+                                },
+                                {
+                                    "displayname": "Deny",
+                                    "value": "deny"
+                                }
+                            ]
+                        },
+                        {
+                            "key": "private_path_publish"
+                        },
+                        {
+                            "key": "private_path_zonal_affinity"
+                        },
+                        {
+                            "key": "private_path_account_policies"
+                        },
+                        {
+                            "key": "network_loadbalancer_name"
+                        },
+                        {
+                            "key": "application_loadbalancer_listener_certificate_instance"
+                        },
+                        {
+                            "key": "application_loadbalancer_listener_idle_timeout"
+                        },
+                        {
+                            "key": "application_loadbalancer_listener_port"
+                        },
+                        {
+                            "key": "application_loadbalancer_listener_protocol"
+                        },
+                        {
+                            "key": "application_loadbalancer_pool_algorithm"
+                        },
+                        {
+                            "key": "application_loadbalancer_pool_health_delay"
+                        },
+                        {
+                            "key": "application_loadbalancer_pool_health_retries"
+                        },
+                        {
+                            "key": "application_loadbalancer_pool_health_timeout"
+                        },
+                        {
+                            "key": "application_loadbalancer_pool_health_type"
+                        },
+                        {
+                            "key": "application_loadbalancer_pool_member_ip_address"
+                        },
+                        {
+                            "key": "application_loadbalancer_pool_member_port"
+                        },
+                        {
+                            "key": "application_loadbalancer_pool_protocol"
+                        },
+                        {
+                            "key": "application_loadbalancer_type",
+                            "options": [
+                                {
+                                    "displayname": "public",
+                                    "value": "public"
+                                },
+                                {
+                                    "displayname": "private",
+                                    "value": "private"
+                                }
+                            ]
+                        },
+                        {
+                            "key": "network_loadbalancer_listener_accept_proxy_protocol"
+                        },
+                        {
+                            "key": "network_loadbalancer_listener_port"
+                        },
+                        {
+                            "key": "network_loadbalancer_pool_algorithm"
+                        },
+                        {
+                            "key": "network_loadbalancer_pool_health_delay"
+                        },
+                        {
+                            "key": "network_loadbalancer_pool_health_monitor_port"
+                        },
+                        {
+                            "key": "network_loadbalancer_pool_health_monitor_url"
+                        },
+                        {
+                            "key": "network_loadbalancer_pool_health_retries"
+                        },
+                        {
+                            "key": "network_loadbalancer_pool_health_timeout"
+                        },
+                        {
+                            "key": "network_loadbalancer_pool_health_type"
+                        },
+                        {
+                            "key": "network_loadbalancer_pool_member_port"
+                        }
+                    ],
+                    "architecture": {
+                        "features": [
+                            {
+                                "title": "Creates a Application load balancer.",
+                                "description": "Sets up an IBM Application load balancer with a backend pool to connect to the external service."
+                            },
+                            {
+                                "title": "Creates a Private Path service.",
+                                "description": "Creates an IBM VPC Private Path service."
+                            },
+                            {
+                                "title": "Sets up a Private Path Network load balancer.",
+                                "description": "Sets up an IBM Private Path Network load balancer with a backend pool to connect to the VPE Gateway."
+                            }
+                        ],
+                        "diagrams": [
+                            {
+                                "diagram": {
+                                    "caption": "Private Path",
+                                    "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-vpc-private-path/main/reference-architecture/private-path.svg",
+                                    "type": "image/svg+xml"
+                                },
+                                "description": "You can deploy a Private path service on IBM Cloud to facilitate secure, private connectivity between IBM Cloud Virtual Private Cloud (VPC) environments and on-premises networks or external services using this solution. This solution automates the deployment of IBM Cloud's Private Path and Application Load Balancer (ALB) services to enable enterprises to establish robust, private, and scalable network connections."
+                            }
+                        ]
+                    },
+                    "dependencies": [
+                        {
+                            "name": "deploy-arch-ibm-account-infra-base",
+                            "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+                            "flavors": [
+                                "standard"
+                            ],
+                            "id": "63641cec-6093-4b4f-b7b0-98d2f4185cd6-global",
+                            "ignore_auto_referencing": [
+                                "*"
+                            ],
+                            "input_mapping": [
+                                {
+                                    "dependency_output": "workload_resource_group_name",
+                                    "version_input": "existing_resource_group_name"
+                                },
+                                {
+                                    "dependency_input": "prefix",
+                                    "version_input": "prefix",
+                                    "reference_version": true
+                                }
+                            ],
+                            "optional": true,
+                            "on_by_default": true,
+                            "version": "^v1.18.0"
+                        },
+                        {
+                            "name": "deploy-arch-ibm-vpc",
+                            "id": "2af61763-f8ef-4527-a815-b92166f29bc8",
+                            "version": "^v7.21.0",
+                            "flavors": [
+                                "fully-configurable"
+                            ],
+                            "catalog_id": "f64499c8-eb50-4985-bf91-29f9e605a433",
+                            "optional": true,
+                            "on_by_default": true,
+                            "ignore_auto_referencing": [
+                                "*"
+                            ],
+                            "input_mapping": [
+                                {
+                                    "dependency_input": "prefix",
+                                    "version_input": "prefix",
+                                    "reference_version": true
+                                },
+                                {
+                                    "dependency_input": "existing_resource_group_name",
+                                    "version_input": "existing_resource_group_name",
+                                    "reference_version": true
+                                },
+                                {
+                                    "dependency_output": "vpc_id",
+                                    "version_input": "existing_vpc_id"
+                                }
+                            ]
+                        }
+                    ],
+                    "dependency_version_2": true
+                }
+            ]
+        }
+    ]
+}
