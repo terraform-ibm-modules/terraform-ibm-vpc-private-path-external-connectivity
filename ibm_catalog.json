@@ -2,15 +2,14 @@
     "products": [
         {
             "name": "deploy-arch-ibm-is-private-path-ext-conn",
-            "label": "Cloud essentials for private-path external connectivity",
+            "label": "IBM Cloud Essentials Private Path service for external connectivity",
             "product_kind": "solution",
             "tags": [
                 "ibm_created",
                 "target_terraform",
                 "terraform",
                 "solution",
-                "network",
-                "ibm_beta"
+                "network"
             ],
             "keywords": [
                 "vpc",
@@ -109,6 +108,7 @@
                         },
                         {
                             "key": "existing_resource_group_name",
+                            "display_name": "resource_group",
                             "required": true,
                             "custom_config": {
                                 "type": "resource_group",
