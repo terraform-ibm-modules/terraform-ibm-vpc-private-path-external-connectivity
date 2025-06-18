@@ -18,3 +18,4 @@ CRA_TARGETS:
       TF_VAR_application_loadbalancer_pool_member_ip_address: ["159.23.92.5", "159.23.92.6"]
       TF_VAR_private_path_service_endpoints: ["vpc-pp.example.com"]
       TF_VAR_existing_vpc_id: "r006-a95450db-e5c3-49fb-b630-31aea1deb8d8"
+      TF_VAR_provider_visibility: "public"
