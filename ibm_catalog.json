@@ -2,7 +2,7 @@
     "products": [
         {
             "name": "deploy-arch-ibm-is-private-path-ext-conn",
-            "label": "[Add-ons Beta] Cloud essentials for private-path external connectivity",
+            "label": "Cloud essentials for private-path external connectivity",
             "product_kind": "solution",
             "tags": [
                 "ibm_created",

@@ -5,7 +5,7 @@ offerings:
   - name: deploy-arch-ibm-is-private-path-ext-conn
     kind: solution
     catalog_id: 7df1e4ca-d54c-4fd0-82ce-3d13247308cd
-    offering_id: 7ca9901b-fe77-4c1e-9036-b9cf49e754f5
+    offering_id: 0be06773-9d63-439e-8211-c9787a0d27e7
     variations:
       - name: fully-configurable
         mark_ready: true
