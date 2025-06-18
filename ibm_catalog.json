@@ -1,7 +1,7 @@
 {
     "products": [
         {
-            "name": "deploy-arch-ibm-is-private-path-external-connectivity",
+            "name": "deploy-arch-ibm-is-private-path-ext-conn",
             "label": "[Add-ons Beta] Cloud essentials for private-path external connectivity",
             "product_kind": "solution",
             "tags": [
@@ -9,20 +9,22 @@
                 "target_terraform",
                 "terraform",
                 "solution",
-                "network"
+                "network",
+                "ibm_beta"
             ],
             "keywords": [
                 "vpc",
                 "private path",
                 "private",
                 "nlb",
+                "alb",
                 "IaC",
                 "infrastructure as code",
                 "terraform",
                 "solution"
             ],
             "short_description": "Creates and configures a VPC Private Path service for external connectivity.",
-            "long_description": "You can provision and configure a VPC Private Path service for external connectivity using this solution.",
+            "long_description": "Private network connectivity is essential for IBM Cloud® customers who prioritize privacy, security, and compliance.\n\nThrough Private Path services for VPC, providers can deliver their cloud and on-premises services over the IBM Cloud private network backbone, ensuring secure and private interactions for consumers.\n\nYou can use this solution to provision and configure a VPC Private Path service to securely connect services hosted in IBM Cloud VPC, on-premise or other reachable external locations.\n\nℹ️ This Terraform-based automation is part of a broader suite of IBM-maintained Infrastructure as Code (IaC) assets, each following the naming pattern \"Cloud automation for *servicename*\" and focusing on single IBM Cloud service. These single-service deployable architectures can be used on their own to streamline and automate service deployments through an [IaC approach](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-understanding-projects), or assembled together into a broader [automated IaC stack](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-config-stack) to automate the deployment of an end-to-end solution architecture.",
             "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/blob/main/solutions/fully-configurable/README.md",
             "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/main/images/private_path.svg",
             "provider_name": "IBM",
@@ -57,11 +59,32 @@
                     },
                     "iam_permissions": [
                         {
-                            "service_name": "is",
                             "role_crns": [
-                                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                                "crn:v1:bluemix:public:iam::::role:Administrator"
+                            ],
+                            "service_name": "iam-identity",
+                            "notes": "[Optional] Required if Cloud automation for account configuration is enabled."
+                        },
+                        {
+                            "role_crns": [
+                                "crn:v1:bluemix:public:iam::::role:Administrator"
+                            ],
+                            "service_name": "is.vpc",
+                            "notes": "[Optional] Required if Cloud automation for Virtual Private Cloud(VPC) is enabled."
+                        },
+                        {
+                            "role_crns": [
                                 "crn:v1:bluemix:public:iam::::role:Editor"
-                            ]
+                            ],
+                            "service_name": "is.vpc",
+                            "notes": "Required for creating Private-path service and Application Load balancer."
+                        },
+                        {
+                            "role_crns": [
+                                "crn:v1:bluemix:public:iam::::role:Viewer"
+                            ],
+                            "service_name": "all-account-management-services",
+                            "notes": "Required for listing all available Resource Groups."
                         }
                     ],
                     "configuration": [
@@ -254,21 +277,31 @@
                         },
                         {
                             "key": "network_loadbalancer_pool_member_port"
+                        },
+                        {
+                            "key": "provider_visibility",
+                            "hidden": true,
+                            "options": [
+                                {
+                                    "displayname": "private",
+                                    "value": "private"
+                                },
+                                {
+                                    "displayname": "public",
+                                    "value": "public"
+                                },
+                                {
+                                    "displayname": "public-and-private",
+                                    "value": "public-and-private"
+                                }
+                            ]
                         }
                     ],
                     "architecture": {
                         "features": [
                             {
-                                "title": "Creates a Application load balancer.",
-                                "description": "Sets up an IBM Application load balancer with a backend pool to connect to the external service."
-                            },
-                            {
-                                "title": "Creates a Private Path service.",
-                                "description": "Creates an IBM VPC Private Path service."
-                            },
-                            {
-                                "title": "Sets up a Private Path Network load balancer.",
-                                "description": "Sets up an IBM Private Path Network load balancer with a backend pool to connect to the VPE Gateway."
+                                "title": " ",
+                                "description": "Configured to use IBM secure by default standards, but can be edited to fit your use case."
                             }
                         ],
                         "diagrams": [
@@ -278,49 +311,44 @@
                                     "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-vpc-private-path/main/reference-architecture/private-path.svg",
                                     "type": "image/svg+xml"
                                 },
-                                "description": "You can deploy a Private path service on IBM Cloud to facilitate secure, private connectivity between IBM Cloud Virtual Private Cloud (VPC) environments and on-premises networks or external services using this solution. This solution automates the deployment of IBM Cloud's Private Path and Application Load Balancer (ALB) services to enable enterprises to establish robust, private, and scalable network connections."
+                                "description": "You can deploy a <b>Private Path</b> service on IBM Cloud to facilitate secure, private connectivity between IBM Cloud Virtual Private Cloud (VPC) environments and on-premises networks or external services using this solution. This solution automates the deployment of IBM Cloud's Private Path and Application Load Balancer (ALB) services to enable enterprises to establish robust, private, and scalable network connections.<br><br>The Private Path service establishes private Layer 3 network connectivity between IBM Cloud VPC resources and external destinations such as on-premises data centers or other cloud environments. It leverages secure IPsec tunnels and Direct Link connections to maintain encrypted, low-latency communication, ensuring sensitive workloads can operate within a highly secure, isolated network path that bypasses the public internet.<br><br>By automating the provisioning and configuration of these components, the solution delivers a seamless, production-ready framework for establishing hybrid connectivity, optimizing both performance and security. This approach enhances operational agility while maintaining enterprise-grade standards for secure data exchange across cloud and on-premises boundaries."
                             }
                         ]
                     },
                     "dependencies": [
                         {
                             "name": "deploy-arch-ibm-account-infra-base",
+                            "description": "Cloud automation for Account Configuration organizes your IBM Cloud account with a ready-made set of resource groups by default and when you enable the \"with Account Settings\" option, it also applies baseline security and governance settings. ",
                             "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
                             "flavors": [
-                                "standard"
+                                "resource-group-only",
+                                "resource-groups-with-account-settings"
                             ],
+                            "default_flavor": "resource-group-only",
                             "id": "63641cec-6093-4b4f-b7b0-98d2f4185cd6-global",
-                            "ignore_auto_referencing": [
-                                "*"
-                            ],
                             "input_mapping": [
-                                {
-                                    "dependency_output": "workload_resource_group_name",
-                                    "version_input": "existing_resource_group_name"
-                                },
                                 {
                                     "dependency_input": "prefix",
                                     "version_input": "prefix",
                                     "reference_version": true
+                                },
+                                {
+                                    "dependency_output": "workload_resource_group_name",
+                                    "version_input": "existing_resource_group_name"
                                 }
                             ],
                             "optional": true,
-                            "on_by_default": true,
-                            "version": "^v1.18.0"
+                            "on_by_default": false,
+                            "version": "v3.0.7"
                         },
                         {
                             "name": "deploy-arch-ibm-vpc",
-                            "id": "2af61763-f8ef-4527-a815-b92166f29bc8",
-                            "version": "^v7.21.0",
+                            "description": "Cloud automation for VPC provisions and configures an IBM Virtual Private Cloud (VPC) environment with subnets, network ACLs, public gateways, and routing tables.",
+                            "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
                             "flavors": [
                                 "fully-configurable"
                             ],
-                            "catalog_id": "f64499c8-eb50-4985-bf91-29f9e605a433",
-                            "optional": true,
-                            "on_by_default": true,
-                            "ignore_auto_referencing": [
-                                "*"
-                            ],
+                            "id": "2af61763-f8ef-4527-a815-b92166f29bc8-global",
                             "input_mapping": [
                                 {
                                     "dependency_input": "prefix",
@@ -336,10 +364,14 @@
                                     "dependency_output": "vpc_id",
                                     "version_input": "existing_vpc_id"
                                 }
-                            ]
+                            ],
+                            "optional": true,
+                            "on_by_default": true,
+                            "version": "^v7.24.0"
                         }
                     ],
-                    "dependency_version_2": true
+                    "dependency_version_2": true,
+                    "terraform_version": "1.10.5"
                 }
             ]
         }
