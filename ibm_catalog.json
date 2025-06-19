@@ -82,8 +82,8 @@
                             "role_crns": [
                                 "crn:v1:bluemix:public:iam::::role:Viewer"
                             ],
-                            "service_name": "all-account-management-services",
-                            "notes": "Required for listing all available Resource Groups."
+                            "service_name": "Resource group only",
+                            "notes": "Viewer access is required in the resource group you want to provision in."
                         }
                     ],
                     "configuration": [
