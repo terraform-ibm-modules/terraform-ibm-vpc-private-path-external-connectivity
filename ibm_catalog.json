@@ -22,23 +22,23 @@
                 "terraform",
                 "solution"
             ],
-            "short_description": "Automates the deployment of a VPC Private Path service on IBM Cloud with integration of Application Loadbalancer for external connectivity.",
-            "long_description": "Private network connectivity is essential for IBM Cloud® customers who prioritize privacy, security, and compliance.\n\nThrough Private Path services for VPC, providers can deliver their cloud and on-premises services over the IBM Cloud private network backbone, ensuring secure and private interactions for consumers.\n\nYou can use this solution to provision and configure a VPC Private Path service to securely connect services hosted in IBM Cloud VPC, on-premise or other reachable external locations.\n\nℹ️ This Terraform-based automation is part of a broader suite of IBM-maintained Infrastructure as Code (IaC) assets, each following the naming pattern \"Cloud automation for *servicename*\" and focusing on single IBM Cloud service. These single-service deployable architectures can be used on their own to streamline and automate service deployments through an [IaC approach](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-understanding-projects), or assembled together into a broader [automated IaC stack](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-config-stack) to automate the deployment of an end-to-end solution architecture.",
+            "short_description": "Automates the deployment of a VPC Private path service on IBM Cloud with integration of Application loadbalancer for external connectivity.",
+            "long_description": "Private network connectivity is essential for IBM Cloud customers who prioritize privacy, security, and compliance.\n\nThrough Private path services for VPC, providers can deliver their cloud and on-premises services over the IBM Cloud private network backbone, ensuring secure and private interactions for consumers.\n\nYou can use this solution to provision and configure a VPC Private path service to securely connect services hosted in IBM Cloud VPC, on-premise or other reachable external locations.\n\nℹ️ This Terraform-based automation is part of a broader suite of IBM-maintained Infrastructure as Code (IaC) assets, each following the naming pattern \"Cloud automation for *servicename*\" and focusing on single IBM Cloud service. These single-service deployable architectures can be used on their own to streamline and automate service deployments through an [IaC approach](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-understanding-projects), or assembled together into a broader [automated IaC stack](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-config-stack) to automate the deployment of an end-to-end solution architecture.",
             "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/blob/main/solutions/fully-configurable/README.md",
             "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/main/images/private_path.svg",
             "provider_name": "IBM",
             "features": [
                 {
-                    "title": "Creates an Application load balancer.",
-                    "description": "Sets up an IBM Application load balancer with a backend pool to connect to the external service."
+                    "title": "Application load balancer",
+                    "description": "Sets up an IBM Cloud Application load balancer (ALB) within a Virtual Private Cloud (VPC) environment to manage and distribute incoming network traffic across multiple backend targets."
                 },
                 {
-                    "title": "Creates a Private Path service.",
-                    "description": "Creates an IBM VPC Private Path service."
+                    "title": "Private Path Network load balancer.",
+                    "description": "Sets up an IBM Private Path Network load balancer with a backend pool to connect to the VPE Gateway. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-ppnlb-ui-creating-private-path-network-load-balancer&interface=ui)."
                 },
                 {
-                    "title": "Sets up a Private Path Network load balancer.",
-                    "description": "Sets up an IBM Private Path Network load balancer with a backend pool to connect to the VPE Gateway."
+                    "title": "Private Path service",
+                    "description": "Creates an IBM VPC Private Path services provide private connectivity for IBM Cloud and third-party services. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-private-path-service-intro)."
                 }
             ],
             "flavors": [
