@@ -30,7 +30,7 @@
             "features": [
                 {
                     "title": "Application load balancer",
-                    "description": "Sets up an IBM Cloud Application load balancer (ALB) within a Virtual Private Cloud (VPC) environment to manage and distribute incoming network traffic across multiple backend targets."
+                    "description": "Sets up an IBM Cloud Application load balancer (ALB) within a Virtual Private Cloud (VPC) environment to manage and distribute incoming network traffic across multiple backend targets. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-load-balancers)."
                 },
                 {
                     "title": "Private Path Network load balancer.",
@@ -307,11 +307,11 @@
                         "diagrams": [
                             {
                                 "diagram": {
-                                    "caption": "Private Path",
+                                    "caption": "VPC Private Path topology",
                                     "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/main/reference-architecture/reference-architectures/private-path-external-connectivity.svg",
                                     "type": "image/svg+xml"
                                 },
-                                "description": "You can deploy a <b>Private Path</b> service on IBM Cloud to facilitate secure, private connectivity between IBM Cloud Virtual Private Cloud (VPC) environments and on-premises networks or external services using this solution. This solution automates the deployment of IBM Cloud's Private Path and Application Load Balancer (ALB) services to enable enterprises to establish robust, private, and scalable network connections.<br><br>The Private Path service establishes private Layer 3 network connectivity between IBM Cloud VPC resources and external destinations such as on-premises data centers or other cloud environments. It leverages secure IPsec tunnels and Direct Link connections to maintain encrypted, low-latency communication, ensuring sensitive workloads can operate within a highly secure, isolated network path that bypasses the public internet.<br><br>By automating the provisioning and configuration of these components, the solution delivers a seamless, production-ready framework for establishing hybrid connectivity, optimizing both performance and security. This approach enhances operational agility while maintaining enterprise-grade standards for secure data exchange across cloud and on-premises boundaries."
+                                "description": "You can deploy a <b>Private Path</b> service on IBM Cloud to facilitate secure, private connectivity between IBM Cloud Virtual Private Cloud (VPC) environments and on-premises networks or external services using this solution. This solution automates the deployment of IBM Cloud's Private Path and Application Load Balancer (ALB) services to enable enterprises to establish robust, private, and scalable network connections.<br><br>The Private Path service establishes private Layer 3 network connectivity between IBM Cloud VPC resources and external destinations such as on-premises data centers or other cloud environments. It leverages secure IPsec tunnels and Direct Link connections to maintain encrypted, low-latency communication, ensuring sensitive workloads can operate within a highly secure, isolated network path that bypasses the public internet.<br><br>By automating the provisioning and configuration of these components, the solution delivers a seamless, production-ready framework for establishing hybrid connectivity, optimizing both performance and security. This approach enhances operational agility while maintaining enterprise-grade standards for secure data exchange across cloud and on-premises boundaries.<br><br>You can create a fully-configured <b>VPC</b> by selecting the [Cloud automation for VPC](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-vpc-2af61763-f8ef-4527-a815-b92166f29bc8-global) dependency or you can use an existing VPC if any. The VPC can be provisioned either in a single-zone or multi-zone configuration, depending on your availability requirements. By default, the VPC addon provisions a three-zone VPC."
                             }
                         ]
                     },
@@ -343,7 +343,7 @@
                         },
                         {
                             "name": "deploy-arch-ibm-vpc",
-                            "description": "Cloud automation for VPC provisions and configures an IBM Virtual Private Cloud (VPC) environment with subnets, network ACLs, public gateways, and routing tables.",
+                            "description": "Provisions and configure the VPC instance and subnets where the Private path resources will be deployed.",
                             "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
                             "flavors": [
                                 "fully-configurable"
@@ -361,13 +361,18 @@
                                     "reference_version": true
                                 },
                                 {
+                                    "dependency_input": "region",
+                                    "version_input": "region",
+                                    "reference_version": true
+                                },
+                                {
                                     "dependency_output": "vpc_id",
                                     "version_input": "existing_vpc_id"
                                 }
                             ],
                             "optional": true,
                             "on_by_default": true,
-                            "version": "^v7.24.0"
+                            "version": "v7.24.0"
                         }
                     ],
                     "dependency_version_2": true,
