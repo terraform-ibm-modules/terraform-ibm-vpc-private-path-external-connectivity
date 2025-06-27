@@ -26,6 +26,8 @@ TF_VARS_FILE="terraform.tfvars"
     } >>${TF_VARS_FILE}
     terraform apply -input=false -auto-approve -var-file=${TF_VARS_FILE} || exit 1
 
+    sleep 120 # temp workaround for this error: `Please make sure to use an existing subnet with ''available'' status.'`
+
     resource_group_name_var_name="existing_resource_group_name"
     resource_group_name_var_value=$(terraform output -state=terraform.tfstate -raw resource_group_name)
     existing_subnet_id_var_name="existing_subnet_id"
