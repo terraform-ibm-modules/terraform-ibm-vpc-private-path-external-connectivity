@@ -1,0 +1,7 @@
+{
+  "ibmcloud_api_key": $VALIDATION_APIKEY,
+  "region": "us-south",
+  "prefix": $PREFIX,
+  "private_path_name": $PREFIX,
+  "private_path_service_endpoints": ["vpc-pps.example.com"]
+}
