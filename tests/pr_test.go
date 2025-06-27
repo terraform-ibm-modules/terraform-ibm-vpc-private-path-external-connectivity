@@ -120,7 +120,7 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 	t.Parallel()
 
 	// Provision existing resources first
-	prefix := fmt.Sprintf("pp-existing-%s", strings.ToLower(random.UniqueId()))
+	prefix := fmt.Sprintf("pp-upg-%s", strings.ToLower(random.UniqueId()))
 	existingTerraformOptions := setupTerraform(t, prefix, "./resources")
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
