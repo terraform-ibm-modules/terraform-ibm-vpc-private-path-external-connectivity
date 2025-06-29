@@ -4,7 +4,7 @@
 
 module "resource_group" {
   source                       = "terraform-ibm-modules/resource-group/ibm"
-  version                      = "1.2.0"
+  version                      = "1.2.1"
   existing_resource_group_name = var.existing_resource_group_name
 }
 
@@ -57,7 +57,7 @@ resource "ibm_is_lb_listener" "alb_frontend_listener" {
 
 module "private_path" {
   source            = "terraform-ibm-modules/vpc-private-path/ibm"
-  version           = "1.0.0"
+  version           = "1.1.0"
   resource_group_id = module.resource_group.resource_group_id
   subnet_id         = local.subnet_id
   tags              = var.private_path_tags
