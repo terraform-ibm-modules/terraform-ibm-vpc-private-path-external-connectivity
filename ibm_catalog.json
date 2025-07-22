@@ -1,384 +1,385 @@
 {
-    "products": [
+  "products": [
+    {
+      "name": "deploy-arch-ibm-is-private-path-ext-conn",
+      "label": "IBM Cloud Essentials Private Path service for external connectivity",
+      "product_kind": "solution",
+      "tags": [
+        "ibm_created",
+        "target_terraform",
+        "terraform",
+        "solution",
+        "network",
+        "converged_infra"
+      ],
+      "keywords": [
+        "vpc",
+        "private path",
+        "private",
+        "nlb",
+        "alb",
+        "IaC",
+        "infrastructure as code",
+        "terraform",
+        "solution"
+      ],
+      "short_description": "Automates the deployment of a VPC Private path service on IBM Cloud with integration of Application loadbalancer for external connectivity.",
+      "long_description": "Private network connectivity is essential for IBM Cloud customers who prioritize privacy, security, and compliance.\n\nThrough Private path services for VPC, providers can deliver their cloud and on-premises services over the IBM Cloud private network backbone, ensuring secure and private interactions for consumers.\n\nYou can use this solution to provision and configure a VPC Private path service to securely connect services hosted in IBM Cloud VPC, on-premise or other reachable external locations.\n\nℹ️ This Terraform-based automation is part of a broader suite of IBM-maintained Infrastructure as Code (IaC) assets, each following the naming pattern \"Cloud automation for *servicename*\" and focusing on single IBM Cloud service. These single-service deployable architectures can be used on their own to streamline and automate service deployments through an [IaC approach](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-understanding-projects), or assembled together into a broader [automated IaC stack](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-config-stack) to automate the deployment of an end-to-end solution architecture.",
+      "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/blob/main/solutions/fully-configurable/README.md",
+      "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/main/images/private_path.svg",
+      "provider_name": "IBM",
+      "features": [
         {
-            "name": "deploy-arch-ibm-is-private-path-ext-conn",
-            "label": "IBM Cloud Essentials Private Path service for external connectivity",
-            "product_kind": "solution",
-            "tags": [
-                "ibm_created",
-                "target_terraform",
-                "terraform",
-                "solution",
-                "network"
-            ],
-            "keywords": [
-                "vpc",
-                "private path",
-                "private",
-                "nlb",
-                "alb",
-                "IaC",
-                "infrastructure as code",
-                "terraform",
-                "solution"
-            ],
-            "short_description": "Automates the deployment of a VPC Private path service on IBM Cloud with integration of Application loadbalancer for external connectivity.",
-            "long_description": "Private network connectivity is essential for IBM Cloud customers who prioritize privacy, security, and compliance.\n\nThrough Private path services for VPC, providers can deliver their cloud and on-premises services over the IBM Cloud private network backbone, ensuring secure and private interactions for consumers.\n\nYou can use this solution to provision and configure a VPC Private path service to securely connect services hosted in IBM Cloud VPC, on-premise or other reachable external locations.\n\nℹ️ This Terraform-based automation is part of a broader suite of IBM-maintained Infrastructure as Code (IaC) assets, each following the naming pattern \"Cloud automation for *servicename*\" and focusing on single IBM Cloud service. These single-service deployable architectures can be used on their own to streamline and automate service deployments through an [IaC approach](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-understanding-projects), or assembled together into a broader [automated IaC stack](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-config-stack) to automate the deployment of an end-to-end solution architecture.",
-            "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/blob/main/solutions/fully-configurable/README.md",
-            "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/main/images/private_path.svg",
-            "provider_name": "IBM",
-            "features": [
-                {
-                    "title": "Application load balancer",
-                    "description": "Sets up an IBM Cloud Application load balancer (ALB) within a Virtual Private Cloud (VPC) environment to manage and distribute incoming network traffic across multiple backend targets. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-load-balancers)."
-                },
-                {
-                    "title": "Private Path Network load balancer.",
-                    "description": "Sets up an IBM Private Path Network load balancer with a backend pool to connect to the VPE Gateway. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-ppnlb-ui-creating-private-path-network-load-balancer&interface=ui)."
-                },
-                {
-                    "title": "Private Path service",
-                    "description": "Creates an IBM VPC Private Path services provide private connectivity for IBM Cloud and third-party services. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-private-path-service-intro)."
-                }
-            ],
-            "flavors": [
-                {
-                    "label": "Fully configurable",
-                    "name": "fully-configurable",
-                    "install_type": "fullstack",
-                    "working_directory": "solutions/fully-configurable",
-                    "compliance": {
-                        "authority": "scc-v3",
-                        "profiles": [
-                            {
-                                "profile_name": "IBM Cloud Framework for Financial Services",
-                                "profile_version": "1.7.0"
-                            }
-                        ]
-                    },
-                    "iam_permissions": [
-                        {
-                            "role_crns": [
-                                "crn:v1:bluemix:public:iam::::role:Administrator"
-                            ],
-                            "service_name": "iam-identity",
-                            "notes": "[Optional] Required if Cloud automation for account configuration is enabled."
-                        },
-                        {
-                            "role_crns": [
-                                "crn:v1:bluemix:public:iam::::role:Administrator"
-                            ],
-                            "service_name": "is.vpc",
-                            "notes": "[Optional] Required if Cloud automation for Virtual Private Cloud(VPC) is enabled."
-                        },
-                        {
-                            "role_crns": [
-                                "crn:v1:bluemix:public:iam::::role:Editor"
-                            ],
-                            "service_name": "is.vpc",
-                            "notes": "Required for creating Private-path service and Application Load balancer."
-                        },
-                        {
-                            "role_crns": [
-                                "crn:v1:bluemix:public:iam::::role:Viewer"
-                            ],
-                            "service_name": "Resource group only",
-                            "notes": "Viewer access is required in the resource group you want to provision in."
-                        }
-                    ],
-                    "configuration": [
-                        {
-                            "key": "ibmcloud_api_key"
-                        },
-                        {
-                            "custom_config": {
-                                "config_constraints": {
-                                    "generationType": "2"
-                                },
-                                "grouping": "deployment",
-                                "original_grouping": "deployment",
-                                "type": "vpc_region"
-                            },
-                            "key": "region",
-                            "required": true
-                        },
-                        {
-                            "key": "prefix",
-                            "required": true
-                        },
-                        {
-                            "key": "existing_resource_group_name",
-                            "display_name": "resource_group",
-                            "required": true,
-                            "custom_config": {
-                                "type": "resource_group",
-                                "grouping": "deployment",
-                                "original_grouping": "deployment",
-                                "config_constraints": {
-                                    "identifier": "rg_name"
-                                }
-                            }
-                        },
-                        {
-                            "key": "existing_vpc_id"
-                        },
-                        {
-                            "key": "existing_subnet_id",
-                            "required": true,
-                            "custom_config": {
-                                "type": "platform_resource",
-                                "grouping": "deployment",
-                                "original_grouping": "deployment",
-                                "config_constraints": {
-                                    "resourceType": "subnet",
-                                    "selection": "single_select",
-                                    "valueType": "id"
-                                }
-                            }
-                        },
-                        {
-                            "key": "private_path_service_endpoints",
-                            "required": true,
-                            "custom_config": {
-                                "grouping": "deployment",
-                                "original_grouping": "deployment",
-                                "config_constraints": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        {
-                            "key": "private_path_tags",
-                            "custom_config": {
-                                "grouping": "deployment",
-                                "original_grouping": "deployment",
-                                "config_constraints": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        {
-                            "key": "private_path_access_tags",
-                            "custom_config": {
-                                "grouping": "deployment",
-                                "original_grouping": "deployment",
-                                "config_constraints": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        {
-                            "key": "private_path_name"
-                        },
-                        {
-                            "key": "private_path_default_access_policy",
-                            "options": [
-                                {
-                                    "displayname": "Review",
-                                    "value": "review"
-                                },
-                                {
-                                    "displayname": "Permit",
-                                    "value": "permit"
-                                },
-                                {
-                                    "displayname": "Deny",
-                                    "value": "deny"
-                                }
-                            ]
-                        },
-                        {
-                            "key": "private_path_publish"
-                        },
-                        {
-                            "key": "private_path_zonal_affinity"
-                        },
-                        {
-                            "key": "private_path_account_policies"
-                        },
-                        {
-                            "key": "network_loadbalancer_name"
-                        },
-                        {
-                            "key": "application_loadbalancer_listener_certificate_instance"
-                        },
-                        {
-                            "key": "application_loadbalancer_listener_idle_timeout"
-                        },
-                        {
-                            "key": "application_loadbalancer_listener_port"
-                        },
-                        {
-                            "key": "application_loadbalancer_listener_protocol"
-                        },
-                        {
-                            "key": "application_loadbalancer_pool_algorithm"
-                        },
-                        {
-                            "key": "application_loadbalancer_pool_health_delay"
-                        },
-                        {
-                            "key": "application_loadbalancer_pool_health_retries"
-                        },
-                        {
-                            "key": "application_loadbalancer_pool_health_timeout"
-                        },
-                        {
-                            "key": "application_loadbalancer_pool_health_type"
-                        },
-                        {
-                            "key": "application_loadbalancer_pool_member_ip_address"
-                        },
-                        {
-                            "key": "application_loadbalancer_pool_member_port"
-                        },
-                        {
-                            "key": "application_loadbalancer_pool_protocol"
-                        },
-                        {
-                            "key": "application_loadbalancer_type",
-                            "options": [
-                                {
-                                    "displayname": "public",
-                                    "value": "public"
-                                },
-                                {
-                                    "displayname": "private",
-                                    "value": "private"
-                                }
-                            ]
-                        },
-                        {
-                            "key": "network_loadbalancer_listener_accept_proxy_protocol"
-                        },
-                        {
-                            "key": "network_loadbalancer_listener_port"
-                        },
-                        {
-                            "key": "network_loadbalancer_pool_algorithm"
-                        },
-                        {
-                            "key": "network_loadbalancer_pool_health_delay"
-                        },
-                        {
-                            "key": "network_loadbalancer_pool_health_monitor_port"
-                        },
-                        {
-                            "key": "network_loadbalancer_pool_health_monitor_url"
-                        },
-                        {
-                            "key": "network_loadbalancer_pool_health_retries"
-                        },
-                        {
-                            "key": "network_loadbalancer_pool_health_timeout"
-                        },
-                        {
-                            "key": "network_loadbalancer_pool_health_type"
-                        },
-                        {
-                            "key": "network_loadbalancer_pool_member_port"
-                        },
-                        {
-                            "key": "provider_visibility",
-                            "hidden": true,
-                            "options": [
-                                {
-                                    "displayname": "private",
-                                    "value": "private"
-                                },
-                                {
-                                    "displayname": "public",
-                                    "value": "public"
-                                },
-                                {
-                                    "displayname": "public-and-private",
-                                    "value": "public-and-private"
-                                }
-                            ]
-                        }
-                    ],
-                    "architecture": {
-                        "features": [
-                            {
-                                "title": " ",
-                                "description": "Configured to use IBM secure by default standards, but can be edited to fit your use case."
-                            }
-                        ],
-                        "diagrams": [
-                            {
-                                "diagram": {
-                                    "caption": "VPC Private Path topology",
-                                    "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/main/reference-architectures/private-path-external-connectivity.svg",
-                                    "type": "image/svg+xml"
-                                },
-                                "description": "You can deploy a <b>Private Path</b> service on IBM Cloud to facilitate secure, private connectivity between IBM Cloud Virtual Private Cloud (VPC) environments and on-premises networks or external services using this solution. This solution automates the deployment of IBM Cloud's Private Path and Application Load Balancer (ALB) services to enable enterprises to establish robust, private, and scalable network connections.<br><br>The Private Path service establishes private Layer 3 network connectivity between IBM Cloud VPC resources and external destinations such as on-premises data centers or other cloud environments. It leverages secure IPsec tunnels and Direct Link connections to maintain encrypted, low-latency communication, ensuring sensitive workloads can operate within a highly secure, isolated network path that bypasses the public internet.<br><br>By automating the provisioning and configuration of these components, the solution delivers a seamless, production-ready framework for establishing hybrid connectivity, optimizing both performance and security. This approach enhances operational agility while maintaining enterprise-grade standards for secure data exchange across cloud and on-premises boundaries.<br><br>You can create a fully-configured <b>VPC</b> by selecting the [Cloud automation for VPC](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-vpc-2af61763-f8ef-4527-a815-b92166f29bc8-global) dependency or you can use an existing VPC if any. The VPC can be provisioned either in a single-zone or multi-zone configuration, depending on your availability requirements. By default, the VPC addon provisions a three-zone VPC."
-                            }
-                        ]
-                    },
-                    "dependencies": [
-                        {
-                            "name": "deploy-arch-ibm-account-infra-base",
-                            "description": "Cloud automation for Account Configuration organizes your IBM Cloud account with a ready-made set of resource groups by default and when you enable the \"with Account Settings\" option, it also applies baseline security and governance settings. ",
-                            "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
-                            "flavors": [
-                                "resource-group-only",
-                                "resource-groups-with-account-settings"
-                            ],
-                            "default_flavor": "resource-group-only",
-                            "id": "63641cec-6093-4b4f-b7b0-98d2f4185cd6-global",
-                            "input_mapping": [
-                                {
-                                    "dependency_input": "prefix",
-                                    "version_input": "prefix",
-                                    "reference_version": true
-                                },
-                                {
-                                    "dependency_output": "workload_resource_group_name",
-                                    "version_input": "existing_resource_group_name"
-                                }
-                            ],
-                            "optional": true,
-                            "on_by_default": false,
-                            "version": "v3.0.7"
-                        },
-                        {
-                            "name": "deploy-arch-ibm-vpc",
-                            "description": "Provisions and configure the VPC instance and subnets where the Private path resources will be deployed.",
-                            "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
-                            "flavors": [
-                                "fully-configurable"
-                            ],
-                            "id": "2af61763-f8ef-4527-a815-b92166f29bc8-global",
-                            "input_mapping": [
-                                {
-                                    "dependency_input": "prefix",
-                                    "version_input": "prefix",
-                                    "reference_version": true
-                                },
-                                {
-                                    "dependency_input": "existing_resource_group_name",
-                                    "version_input": "existing_resource_group_name",
-                                    "reference_version": true
-                                },
-                                {
-                                    "dependency_input": "region",
-                                    "version_input": "region",
-                                    "reference_version": true
-                                },
-                                {
-                                    "dependency_output": "vpc_id",
-                                    "version_input": "existing_vpc_id"
-                                }
-                            ],
-                            "optional": true,
-                            "on_by_default": true,
-                            "version": "v7.24.0"
-                        }
-                    ],
-                    "dependency_version_2": true,
-                    "terraform_version": "1.10.5"
-                }
-            ]
+          "title": "Application load balancer",
+          "description": "Sets up an IBM Cloud Application load balancer (ALB) within a Virtual Private Cloud (VPC) environment to manage and distribute incoming network traffic across multiple backend targets. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-load-balancers)."
+        },
+        {
+          "title": "Private Path Network load balancer.",
+          "description": "Sets up an IBM Private Path Network load balancer with a backend pool to connect to the VPE Gateway. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-ppnlb-ui-creating-private-path-network-load-balancer&interface=ui)."
+        },
+        {
+          "title": "Private Path service",
+          "description": "Creates an IBM VPC Private Path services provide private connectivity for IBM Cloud and third-party services. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-private-path-service-intro)."
         }
-    ]
+      ],
+      "flavors": [
+        {
+          "label": "Fully configurable",
+          "name": "fully-configurable",
+          "install_type": "fullstack",
+          "working_directory": "solutions/fully-configurable",
+          "compliance": {
+            "authority": "scc-v3",
+            "profiles": [
+              {
+                "profile_name": "IBM Cloud Framework for Financial Services",
+                "profile_version": "1.7.0"
+              }
+            ]
+          },
+          "iam_permissions": [
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Administrator"
+              ],
+              "service_name": "iam-identity",
+              "notes": "[Optional] Required if Cloud automation for account configuration is enabled."
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Administrator"
+              ],
+              "service_name": "is.vpc",
+              "notes": "[Optional] Required if Cloud automation for Virtual Private Cloud(VPC) is enabled."
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "service_name": "is.vpc",
+              "notes": "Required for creating Private-path service and Application Load balancer."
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Viewer"
+              ],
+              "service_name": "Resource group only",
+              "notes": "Viewer access is required in the resource group you want to provision in."
+            }
+          ],
+          "configuration": [
+            {
+              "key": "ibmcloud_api_key"
+            },
+            {
+              "custom_config": {
+                "config_constraints": {
+                  "generationType": "2"
+                },
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "type": "vpc_region"
+              },
+              "key": "region",
+              "required": true
+            },
+            {
+              "key": "prefix",
+              "required": true
+            },
+            {
+              "key": "existing_resource_group_name",
+              "display_name": "resource_group",
+              "required": true,
+              "custom_config": {
+                "type": "resource_group",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "identifier": "rg_name"
+                }
+              }
+            },
+            {
+              "key": "existing_vpc_id"
+            },
+            {
+              "key": "existing_subnet_id",
+              "required": true,
+              "custom_config": {
+                "type": "platform_resource",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "resourceType": "subnet",
+                  "selection": "single_select",
+                  "valueType": "id"
+                }
+              }
+            },
+            {
+              "key": "private_path_service_endpoints",
+              "required": true,
+              "custom_config": {
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "key": "private_path_tags",
+              "custom_config": {
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "key": "private_path_access_tags",
+              "custom_config": {
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "key": "private_path_name"
+            },
+            {
+              "key": "private_path_default_access_policy",
+              "options": [
+                {
+                  "displayname": "Review",
+                  "value": "review"
+                },
+                {
+                  "displayname": "Permit",
+                  "value": "permit"
+                },
+                {
+                  "displayname": "Deny",
+                  "value": "deny"
+                }
+              ]
+            },
+            {
+              "key": "private_path_publish"
+            },
+            {
+              "key": "private_path_zonal_affinity"
+            },
+            {
+              "key": "private_path_account_policies"
+            },
+            {
+              "key": "network_loadbalancer_name"
+            },
+            {
+              "key": "application_loadbalancer_listener_certificate_instance"
+            },
+            {
+              "key": "application_loadbalancer_listener_idle_timeout"
+            },
+            {
+              "key": "application_loadbalancer_listener_port"
+            },
+            {
+              "key": "application_loadbalancer_listener_protocol"
+            },
+            {
+              "key": "application_loadbalancer_pool_algorithm"
+            },
+            {
+              "key": "application_loadbalancer_pool_health_delay"
+            },
+            {
+              "key": "application_loadbalancer_pool_health_retries"
+            },
+            {
+              "key": "application_loadbalancer_pool_health_timeout"
+            },
+            {
+              "key": "application_loadbalancer_pool_health_type"
+            },
+            {
+              "key": "application_loadbalancer_pool_member_ip_address"
+            },
+            {
+              "key": "application_loadbalancer_pool_member_port"
+            },
+            {
+              "key": "application_loadbalancer_pool_protocol"
+            },
+            {
+              "key": "application_loadbalancer_type",
+              "options": [
+                {
+                  "displayname": "public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "private",
+                  "value": "private"
+                }
+              ]
+            },
+            {
+              "key": "network_loadbalancer_listener_accept_proxy_protocol"
+            },
+            {
+              "key": "network_loadbalancer_listener_port"
+            },
+            {
+              "key": "network_loadbalancer_pool_algorithm"
+            },
+            {
+              "key": "network_loadbalancer_pool_health_delay"
+            },
+            {
+              "key": "network_loadbalancer_pool_health_monitor_port"
+            },
+            {
+              "key": "network_loadbalancer_pool_health_monitor_url"
+            },
+            {
+              "key": "network_loadbalancer_pool_health_retries"
+            },
+            {
+              "key": "network_loadbalancer_pool_health_timeout"
+            },
+            {
+              "key": "network_loadbalancer_pool_health_type"
+            },
+            {
+              "key": "network_loadbalancer_pool_member_port"
+            },
+            {
+              "key": "provider_visibility",
+              "hidden": true,
+              "options": [
+                {
+                  "displayname": "private",
+                  "value": "private"
+                },
+                {
+                  "displayname": "public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "public-and-private",
+                  "value": "public-and-private"
+                }
+              ]
+            }
+          ],
+          "architecture": {
+            "features": [
+              {
+                "title": " ",
+                "description": "Configured to use IBM secure by default standards, but can be edited to fit your use case."
+              }
+            ],
+            "diagrams": [
+              {
+                "diagram": {
+                  "caption": "VPC Private Path topology",
+                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/main/reference-architectures/private-path-external-connectivity.svg",
+                  "type": "image/svg+xml"
+                },
+                "description": "You can deploy a <b>Private Path</b> service on IBM Cloud to facilitate secure, private connectivity between IBM Cloud Virtual Private Cloud (VPC) environments and on-premises networks or external services using this solution. This solution automates the deployment of IBM Cloud's Private Path and Application Load Balancer (ALB) services to enable enterprises to establish robust, private, and scalable network connections.<br><br>The Private Path service establishes private Layer 3 network connectivity between IBM Cloud VPC resources and external destinations such as on-premises data centers or other cloud environments. It leverages secure IPsec tunnels and Direct Link connections to maintain encrypted, low-latency communication, ensuring sensitive workloads can operate within a highly secure, isolated network path that bypasses the public internet.<br><br>By automating the provisioning and configuration of these components, the solution delivers a seamless, production-ready framework for establishing hybrid connectivity, optimizing both performance and security. This approach enhances operational agility while maintaining enterprise-grade standards for secure data exchange across cloud and on-premises boundaries.<br><br>You can create a fully-configured <b>VPC</b> by selecting the [Cloud automation for VPC](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-vpc-2af61763-f8ef-4527-a815-b92166f29bc8-global) dependency or you can use an existing VPC if any. The VPC can be provisioned either in a single-zone or multi-zone configuration, depending on your availability requirements. By default, the VPC addon provisions a three-zone VPC."
+              }
+            ]
+          },
+          "dependencies": [
+            {
+              "name": "deploy-arch-ibm-account-infra-base",
+              "description": "Cloud automation for Account Configuration organizes your IBM Cloud account with a ready-made set of resource groups by default and when you enable the \"with Account Settings\" option, it also applies baseline security and governance settings. ",
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "flavors": [
+                "resource-group-only",
+                "resource-groups-with-account-settings"
+              ],
+              "default_flavor": "resource-group-only",
+              "id": "63641cec-6093-4b4f-b7b0-98d2f4185cd6-global",
+              "input_mapping": [
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                },
+                {
+                  "dependency_output": "workload_resource_group_name",
+                  "version_input": "existing_resource_group_name"
+                }
+              ],
+              "optional": true,
+              "on_by_default": false,
+              "version": "v3.0.7"
+            },
+            {
+              "name": "deploy-arch-ibm-vpc",
+              "description": "Provisions and configure the VPC instance and subnets where the Private path resources will be deployed.",
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "flavors": [
+                "fully-configurable"
+              ],
+              "id": "2af61763-f8ef-4527-a815-b92166f29bc8-global",
+              "input_mapping": [
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "existing_resource_group_name",
+                  "version_input": "existing_resource_group_name",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "region",
+                  "version_input": "region",
+                  "reference_version": true
+                },
+                {
+                  "dependency_output": "vpc_id",
+                  "version_input": "existing_vpc_id"
+                }
+              ],
+              "optional": true,
+              "on_by_default": true,
+              "version": "v7.24.0"
+            }
+          ],
+          "dependency_version_2": true,
+          "terraform_version": "1.10.5"
+        }
+      ]
+    }
+  ]
 }
