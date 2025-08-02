@@ -4,7 +4,7 @@
 
 module "mock_resource_group" {
   source              = "terraform-ibm-modules/resource-group/ibm"
-  version             = "1.2.1"
+  version             = "1.3.0"
   resource_group_name = "${var.prefix}-mock-rg"
 }
 
@@ -81,7 +81,7 @@ resource "ibm_is_floating_ip" "ip" {
 ################################################################################
 module "resource_group" {
   source              = "terraform-ibm-modules/resource-group/ibm"
-  version             = "1.2.1"
+  version             = "1.3.0"
   resource_group_name = "${var.prefix}-rg"
 }
 
