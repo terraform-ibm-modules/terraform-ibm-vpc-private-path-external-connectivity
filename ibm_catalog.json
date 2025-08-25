@@ -23,7 +23,7 @@
         "terraform",
         "solution"
       ],
-      "short_description": "Automates the deployment of a VPC Private path service on IBM Cloud with integration of Application loadbalancer for external connectivity.",
+      "short_description": "Automates the deployment of a VPC Private path service on IBM Cloud with integration of Application load balancer for external connectivity.",
       "long_description": "Private network connectivity is essential for IBM Cloud customers who prioritize privacy, security, and compliance.\n\nThrough Private path services for VPC, providers can deliver their cloud and on-premises services over the IBM Cloud private network backbone, ensuring secure and private interactions for consumers.\n\nYou can use this solution to provision and configure a VPC Private path service to securely connect services hosted in IBM Cloud VPC, on-premise or other reachable external locations.\n\nℹ️ This Terraform-based automation is part of a broader suite of IBM-maintained Infrastructure as Code (IaC) assets, each following the naming pattern \"Cloud automation for *servicename*\" and focusing on single IBM Cloud service. These single-service deployable architectures can be used on their own to streamline and automate service deployments through an [IaC approach](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-understanding-projects), or assembled together into a broader [automated IaC stack](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-config-stack) to automate the deployment of an end-to-end solution architecture.",
       "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/blob/main/solutions/fully-configurable/README.md",
       "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/main/images/private_path.svg",
@@ -73,17 +73,24 @@
           "iam_permissions": [
             {
               "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Viewer"
+              ],
+              "service_name": "Resource group only",
+              "notes": "Viewer access is required in the resource group you want to provision in."
+            },
+            {
+              "role_crns": [
                 "crn:v1:bluemix:public:iam::::role:Administrator"
               ],
-              "service_name": "iam-identity",
-              "notes": "Required for creating account configuration"
+              "service_name": "All Account Management services",
+              "notes": "[Optional] Required for consuming Account Configuration deployable architecture which creates resource group."
             },
             {
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::role:Administrator"
               ],
               "service_name": "All Identity and Access enabled services",
-              "notes": "Required for creating auth policy for the services"
+              "notes": "[Optional] Required for consuming Account Configuration deployable architecture which creates resource group with account setting."
             },
             {
               "role_crns": [
@@ -91,13 +98,6 @@
               ],
               "service_name": "is.vpc",
               "notes": "[Optional] Required if Cloud automation for Virtual Private Cloud(VPC) is enabled."
-            },
-            {
-              "role_crns": [
-                "crn:v1:bluemix:public:iam::::role:Viewer"
-              ],
-              "service_name": "Resource group only",
-              "notes": "[Optional] Required if Cloud automation for Account Configuration is enabled."
             },
             {
               "role_crns": [
