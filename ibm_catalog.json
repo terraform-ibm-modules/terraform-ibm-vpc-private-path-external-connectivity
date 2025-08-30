@@ -23,7 +23,7 @@
         "terraform",
         "solution"
       ],
-      "short_description": "Automates the deployment of a VPC Private path service on IBM Cloud with integration of Application loadbalancer for external connectivity.",
+      "short_description": "Automates the deployment of a VPC Private path service on IBM Cloud with integration of Application load balancer for external connectivity.",
       "long_description": "Private network connectivity is essential for IBM Cloud customers who prioritize privacy, security, and compliance.\n\nThrough Private path services for VPC, providers can deliver their cloud and on-premises services over the IBM Cloud private network backbone, ensuring secure and private interactions for consumers.\n\nYou can use this solution to provision and configure a VPC Private path service to securely connect services hosted in IBM Cloud VPC, on-premise or other reachable external locations.\n\nℹ️ This Terraform-based automation is part of a broader suite of IBM-maintained Infrastructure as Code (IaC) assets, each following the naming pattern \"Cloud automation for *servicename*\" and focusing on single IBM Cloud service. These single-service deployable architectures can be used on their own to streamline and automate service deployments through an [IaC approach](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-understanding-projects), or assembled together into a broader [automated IaC stack](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-config-stack) to automate the deployment of an end-to-end solution architecture.",
       "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/blob/main/solutions/fully-configurable/README.md",
       "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/main/images/private_path.svg",
@@ -31,21 +31,34 @@
       "features": [
         {
           "title": "Application load balancer",
-          "description": "Sets up an IBM Cloud Application load balancer (ALB) within a Virtual Private Cloud (VPC) environment to manage and distribute incoming network traffic across multiple backend targets. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-load-balancers)."
+          "description": "Sets up an IBM Cloud Application load balancer (ALB) within a Virtual Private Cloud (VPC) environment to manage and distribute incoming network traffic across multiple backend targets. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-load-balancers)"
         },
         {
           "title": "Private Path Network load balancer.",
-          "description": "Sets up an IBM Private Path Network load balancer with a backend pool to connect to the VPE Gateway. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-ppnlb-ui-creating-private-path-network-load-balancer&interface=ui)."
+          "description": "Sets up an IBM Private Path Network load balancer with a backend pool to connect to the VPE Gateway. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-ppnlb-ui-creating-private-path-network-load-balancer&interface=ui)"
         },
         {
           "title": "Private Path service",
-          "description": "Creates an IBM VPC Private Path services provide private connectivity for IBM Cloud and third-party services. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-private-path-service-intro)."
+          "description": "Creates an IBM VPC Private Path services provide private connectivity for IBM Cloud and third-party services. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-private-path-service-intro)"
+        },
+        {
+          "title": "Observability",
+          "description": "This solution can leverage [Cloud automation for Observability](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-observability-a3137d28-79e0-479d-8a24-758ebd5a0eab-global) that supports configuring resources for logging, monitoring and activity tracker event routing (optional)."
+        },
+        {
+          "title": "Object Storage",
+          "description": "Creates and configures an [Object Storage bucket](https://cloud.ibm.com/docs/openshift?topic=openshift-storage-cos-understand) to store VPC flow logs as part of the deployment. You can provide an existing COS Instance or use the [Cloud automation for Object Storage](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-cos-68921490-2778-4930-ac6d-bae7be6cd958-global) for creating a new instance."
+        },
+        {
+          "title": "KMS Encryption",
+          "description": "Optionally you can enable key management services(KMS) [encryption](https://cloud.ibm.com/docs/openshift?topic=openshift-encryption-secrets) of the Object Storage bucket using either a newly created key or an existing one."
         }
       ],
       "flavors": [
         {
           "label": "Fully configurable",
           "name": "fully-configurable",
+          "index": 1,
           "install_type": "fullstack",
           "working_directory": "solutions/fully-configurable",
           "compliance": {
@@ -60,10 +73,24 @@
           "iam_permissions": [
             {
               "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Viewer"
+              ],
+              "service_name": "Resource group only",
+              "notes": "Viewer access is required in the resource group you want to provision in."
+            },
+            {
+              "role_crns": [
                 "crn:v1:bluemix:public:iam::::role:Administrator"
               ],
-              "service_name": "iam-identity",
-              "notes": "[Optional] Required if Cloud automation for account configuration is enabled."
+              "service_name": "All Account Management services",
+              "notes": "[Optional] Required for consuming Account Configuration deployable architecture which creates resource group."
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Administrator"
+              ],
+              "service_name": "All Identity and Access enabled services",
+              "notes": "[Optional] Required for consuming Account Configuration deployable architecture which creates resource group with account setting."
             },
             {
               "role_crns": [
@@ -74,17 +101,58 @@
             },
             {
               "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
-              "service_name": "is.vpc",
-              "notes": "Required for creating Private-path service and Application Load balancer."
+              "service_name": "cloud-object-storage",
+              "notes": "[Optional] Required if Cloud automation for Virtual Private Cloud(VPC) is enabled which sets up a bucket to store VPC flow logs as part of the deployment."
             },
             {
               "role_crns": [
-                "crn:v1:bluemix:public:iam::::role:Viewer"
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                "crn:v1:bluemix:public:iam::::role:Editor"
               ],
-              "service_name": "Resource group only",
-              "notes": "Viewer access is required in the resource group you want to provision in."
+              "service_name": "kms",
+              "notes": "[Optional] Required if KMS encryption is enabled and Key protect is used for encryption of Object Storage bucket which stores VPC flow logs."
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "service_name": "hs-crypto",
+              "notes": "[Optional] Required if you are creating/configuring keys in an existing Hyper Protect Crypto Services (HPCS) instance for encryption."
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "service_name": "sysdig-monitor",
+              "notes": "[Optional] Required if you are consuming Observability deployable architecture which sets up Cloud monitoring."
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "service_name": "logs",
+              "notes": "[Optional] Required if you are consuming Observability deployable architecture which sets up Cloud logs."
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Writer",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "service_name": "atracker",
+              "notes": "[Optional] Required if you are consuming Observability deployable architecture which sets up Activity Tracker Event Routing."
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Administrator"
+              ],
+              "service_name": "metrics-router",
+              "notes": "[Optional] Required if you are consuming Observability deployable architecture which sets up Metrics Routing."
             }
           ],
           "configuration": [
@@ -108,9 +176,32 @@
               "required": true
             },
             {
+              "key": "enable_platform_metrics",
+              "type": "string",
+              "default_value": true,
+              "description": "When set to `true`, the IBM Cloud Monitoring instance will be configured to collect platform metrics from the provided region. You can configure 1 instance only of the IBM Cloud Monitoring service per region to collect platform metrics in that location. Check with the account or service administrator if another monitoring instance has already been configured. You may not have permissions to see all monitoring instances in the region. [Learn more](https://cloud.ibm.com/docs/monitoring?topic=monitoring-platform_metrics_enabling).",
+              "required": true,
+              "virtual": true
+            },
+            {
+              "key": "logs_routing_tenant_regions",
+              "type": "list(string)",
+              "default_value": "[]",
+              "description": "To manage platform logs that are generated by IBM Cloud services in a region of IBM Cloud, you must create a tenant in each region that you operate. Pass a list of regions to create a tenant in. [Learn more](https://cloud.ibm.com/docs/logs-router?topic=logs-router-about-platform-logs).",
+              "required": true,
+              "virtual": true,
+              "custom_config": {
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "type": "string"
+                }
+              }
+            },
+            {
               "key": "existing_resource_group_name",
               "display_name": "resource_group",
-              "required": true,
+              "type": "string",
               "custom_config": {
                 "type": "resource_group",
                 "grouping": "deployment",
@@ -369,6 +460,16 @@
                 {
                   "dependency_output": "vpc_id",
                   "version_input": "existing_vpc_id"
+                },
+                 {
+                  "dependency_input": "enable_platform_metrics",
+                  "version_input": "enable_platform_metrics",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "logs_routing_tenant_regions",
+                  "version_input": "logs_routing_tenant_regions",
+                  "reference_version": true
                 }
               ],
               "optional": true,
