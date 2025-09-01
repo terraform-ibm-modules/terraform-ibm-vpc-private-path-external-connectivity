@@ -277,7 +277,7 @@ variable "private_path_name" {
 
 variable "private_path_publish" {
   type        = bool
-  description = "Set this variable to `true` to allows any account to request access to to the Private Path service. If need be, you can also unpublish where access is restricted to the account that created the Private Path service by setting this variable to `false`."
+  description = "Set this variable to `true` to allow any account to request access to the Private Path service. If need be, you can also unpublish where access is restricted to the account that created the Private Path service by setting this variable to `false`."
   default     = false
 }
 
