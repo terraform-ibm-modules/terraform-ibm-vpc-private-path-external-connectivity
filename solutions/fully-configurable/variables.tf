@@ -60,13 +60,13 @@ variable "prefix" {
 
 variable "private_path_tags" {
   type        = list(string)
-  description = "Optional list of tags to be added to the private path service."
+  description = "Optional list of tags to be added to the Private Path service."
   default     = []
 }
 
 variable "private_path_access_tags" {
   type        = list(string)
-  description = "A list of access tags to apply to the private path service created by the module, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial for more details."
+  description = "A list of access tags to apply to the Private Path service created by the module, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial for more details."
   default     = []
 }
 
@@ -75,7 +75,7 @@ variable "private_path_access_tags" {
 ##############################################################################
 
 variable "existing_vpc_id" {
-  description = "The ID of an existing VPC. If the user provides only the `existing_vpc_id`, the private path service will be provisioned in the first subnet."
+  description = "The ID of an existing VPC. If the user provides only the `existing_vpc_id`, the Private Path service will be provisioned in the first subnet."
   type        = string
   default     = null
   validation {
@@ -108,7 +108,7 @@ variable "application_loadbalancer_type" {
 
 variable "application_loadbalancer_pool_algorithm" {
   type        = string
-  description = "The load-balancing algorithm for private path network load balancer pool members. Supported values are `round_robin` or `weighted_round_robin`."
+  description = "The load-balancing algorithm for Private Path network load balancer pool members. Supported values are `round_robin` or `weighted_round_robin`."
   default     = "round_robin"
 }
 
@@ -150,7 +150,7 @@ variable "application_loadbalancer_pool_protocol" {
 
 variable "application_loadbalancer_listener_port" {
   type        = number
-  description = "The listener port for the private path network load balancer."
+  description = "The listener port for the Private Path network load balancer."
   default     = 80
 }
 
@@ -184,13 +184,13 @@ variable "application_loadbalancer_listener_certificate_instance" {
 
 variable "network_loadbalancer_name" {
   type        = string
-  description = "The name of the private path network load balancer."
+  description = "The name of the Private Path network load balancer."
   default     = "pp-nlb"
 }
 
 variable "network_loadbalancer_listener_port" {
   type        = number
-  description = "The listener port for the private path network load balancer."
+  description = "The listener port for the Private Path network load balancer."
   default     = 80
 }
 
@@ -202,7 +202,7 @@ variable "network_loadbalancer_listener_accept_proxy_protocol" {
 
 variable "network_loadbalancer_pool_algorithm" {
   type        = string
-  description = "The load-balancing algorithm for private path network load balancer pool members. Supported values are `round_robin` or `weighted_round_robin`."
+  description = "The load-balancing algorithm for Private Path network load balancer pool members. Supported values are `round_robin` or `weighted_round_robin`."
   default     = "round_robin"
 }
 

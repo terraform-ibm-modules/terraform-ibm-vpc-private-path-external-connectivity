@@ -23,8 +23,8 @@
         "terraform",
         "solution"
       ],
-      "short_description": "Automates the deployment of a VPC Private path service on IBM Cloud with integration of Application load balancer for external connectivity.",
-      "long_description": "Private network connectivity is essential for IBM Cloud customers who prioritize privacy, security, and compliance.\n\nThrough Private path services for VPC, providers can deliver their cloud and on-premises services over the IBM Cloud private network backbone, ensuring secure and private interactions for consumers.\n\nYou can use this solution to provision and configure a VPC Private path service to securely connect services hosted in IBM Cloud VPC, on-premise or other reachable external locations.\n\nℹ️ This Terraform-based automation is part of a broader suite of IBM-maintained Infrastructure as Code (IaC) assets, each following the naming pattern \"Cloud automation for *servicename*\" and focusing on single IBM Cloud service. These single-service deployable architectures can be used on their own to streamline and automate service deployments through an [IaC approach](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-understanding-projects), or assembled together into a broader [automated IaC stack](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-config-stack) to automate the deployment of an end-to-end solution architecture.",
+      "short_description": "Automates the deployment of a VPC Private Path service on IBM Cloud with integration of Application load balancer for external connectivity.",
+      "long_description": "Private network connectivity is essential for IBM Cloud customers who prioritize privacy, security, and compliance.\n\nThrough Private Path services for VPC, providers can deliver their cloud and on-premises services over the IBM Cloud private network backbone, ensuring secure and private interactions for consumers.\n\nYou can use this solution to provision and configure a VPC Private Path service to securely connect services hosted in IBM Cloud VPC, on-premise or other reachable external locations.\n\nℹ️ This Terraform-based automation is part of a broader suite of IBM-maintained Infrastructure as Code (IaC) assets, each following the naming pattern \"Cloud automation for *servicename*\" and focusing on single IBM Cloud service. These single-service deployable architectures can be used on their own to streamline and automate service deployments through an [IaC approach](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-understanding-projects), or assembled together into a broader [automated IaC stack](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-config-stack) to automate the deployment of an end-to-end solution architecture.",
       "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/blob/main/solutions/fully-configurable/README.md",
       "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/main/images/private_path.svg",
       "provider_name": "IBM",
@@ -332,11 +332,11 @@
               "key": "application_loadbalancer_type",
               "options": [
                 {
-                  "displayname": "public",
+                  "displayname": "Public",
                   "value": "public"
                 },
                 {
-                  "displayname": "private",
+                  "displayname": "Private",
                   "value": "private"
                 }
               ]
@@ -376,15 +376,15 @@
               "hidden": true,
               "options": [
                 {
-                  "displayname": "private",
+                  "displayname": "Private",
                   "value": "private"
                 },
                 {
-                  "displayname": "public",
+                  "displayname": "Public",
                   "value": "public"
                 },
                 {
-                  "displayname": "public-and-private",
+                  "displayname": "Public-and-Private",
                   "value": "public-and-private"
                 }
               ]
@@ -401,7 +401,7 @@
               {
                 "diagram": {
                   "caption": "VPC Private Path topology",
-                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/main/reference-architectures/private-path-external-connectivity.svg",
+                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/main/reference-architectures/deployable-architecture-private-path-external-connectivity.svg",
                   "type": "image/svg+xml"
                 },
                 "description": "This architecture provisions a <b>Private Path</b> service on IBM Cloud to facilitate secure, private connectivity between IBM Cloud Virtual Private Cloud (VPC) environments and on-premises networks or external services using this solution. This solution automates the deployment of IBM Cloud's Private Path and Application Load Balancer (ALB) services to enable enterprises to establish robust, private, and scalable network connections.<br><br>The Private Path service establishes private Layer 3 network connectivity between IBM Cloud VPC resources and external destinations such as on-premises data centers or other cloud environments. It leverages secure IPsec tunnels and Direct Link connections to maintain encrypted, low-latency communication, ensuring sensitive workloads can operate within a highly secure, isolated network path that bypasses the public internet.<br><br>By automating the provisioning and configuration of these components, the solution delivers a seamless, production-ready framework for establishing hybrid connectivity, optimizing both performance and security. This approach enhances operational agility while maintaining enterprise-grade standards for secure data exchange across cloud and on-premises boundaries.<br><br>You can create a fully-configured <b>VPC</b> by selecting the [Cloud automation for VPC](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-vpc-2af61763-f8ef-4527-a815-b92166f29bc8-global) dependency or you can use an existing VPC if any. The VPC can be provisioned either in a single-zone or multi-zone configuration, depending on your availability requirements. By default, the VPC addon provisions a three-zone VPC."
@@ -436,7 +436,7 @@
             },
             {
               "name": "deploy-arch-ibm-vpc",
-              "description": "Provisions and configures the VPC instance and subnets where the Private path resources will be deployed.",
+              "description": "Provisions and configures the VPC instance and subnets where the Private Path resources will be deployed.",
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "flavors": [
                 "fully-configurable"
