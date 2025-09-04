@@ -147,13 +147,6 @@
               ],
               "service_name": "atracker",
               "notes": "[Optional] Required if you are consuming Observability deployable architecture which sets up Activity Tracker Event Routing."
-            },
-            {
-              "role_crns": [
-                "crn:v1:bluemix:public:iam::::role:Administrator"
-              ],
-              "service_name": "metrics-router",
-              "notes": "[Optional] Required if you are consuming Observability deployable architecture which sets up Metrics Routing."
             }
           ],
           "configuration": [
