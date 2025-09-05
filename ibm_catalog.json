@@ -34,7 +34,7 @@
           "description": "Sets up an IBM Cloud Application load balancer (ALB) within a Virtual Private Cloud (VPC) environment to manage and distribute incoming network traffic across multiple backend targets. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-load-balancers)"
         },
         {
-          "title": "Private Path Network load balancer.",
+          "title": "Private Path Network load balancer",
           "description": "Sets up an IBM Private Path Network load balancer with a backend pool to connect to the VPE Gateway. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-ppnlb-ui-creating-private-path-network-load-balancer&interface=ui)"
         },
         {
@@ -43,15 +43,15 @@
         },
         {
           "title": "Observability",
-          "description": "This solution can leverage [Cloud automation for Observability](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-observability-a3137d28-79e0-479d-8a24-758ebd5a0eab-global) that supports configuring resources for logging, monitoring and activity tracker event routing (optional)."
+          "description": "This solution can leverage Cloud automation for Observability that supports configuring resources for logging, monitoring and activity tracker event routing (optional). [Learn more](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-observability-a3137d28-79e0-479d-8a24-758ebd5a0eab-global)"
         },
         {
           "title": "Object Storage",
-          "description": "Creates and configures an [Object Storage bucket](https://cloud.ibm.com/docs/openshift?topic=openshift-storage-cos-understand) to store VPC flow logs as part of the deployment. You can provide an existing COS Instance or use the [Cloud automation for Object Storage](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-cos-68921490-2778-4930-ac6d-bae7be6cd958-global) for creating a new instance."
+          "description": "Creates and configures an [Object Storage bucket](https://cloud.ibm.com/docs/openshift?topic=openshift-storage-cos-understand) to store VPC flow logs as part of the deployment. You can provide an existing COS Instance or use the Cloud automation for Object Storage for creating a new instance. [Learn more](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-cos-68921490-2778-4930-ac6d-bae7be6cd958-global)"
         },
         {
           "title": "KMS Encryption",
-          "description": "Optionally you can enable key management services(KMS) [encryption](https://cloud.ibm.com/docs/openshift?topic=openshift-encryption-secrets) of the Object Storage bucket using either a newly created key or an existing one."
+          "description": "Optionally you can enable key management services(KMS) [encryption](https://cloud.ibm.com/docs/openshift?topic=openshift-encryption-secrets) of the Object Storage bucket using either a newly created key or an existing one. [Learn more](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-kms-2cad4789-fa90-4886-9c9e-857081c273ee-global)"
         }
       ],
       "support_details": "This product is in the community registry, as such support is handled through the [original repo](https://github.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity). If you experience issues please open an issue [here](https://github.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/issues). Please note this product is not supported via the IBM Cloud Support Center.",
