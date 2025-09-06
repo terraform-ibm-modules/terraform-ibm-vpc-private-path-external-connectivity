@@ -65,7 +65,7 @@ output "nlb_listener_id" {
 }
 
 output "private_path_crn" {
-  description = "The CRN for this private path service gateway."
+  description = "The CRN for this Private Path service gateway."
   value       = module.private_path.private_path_crn
 }
 
@@ -75,7 +75,7 @@ output "private_path_id" {
 }
 
 output "private_path_vpc" {
-  description = "The VPC this private path service gateway resides in."
+  description = "The VPC this Private Path service gateway resides in."
   value       = module.private_path.private_path_vpc
 }
 
