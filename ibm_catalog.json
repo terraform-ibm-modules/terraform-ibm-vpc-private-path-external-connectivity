@@ -84,14 +84,14 @@
                 "crn:v1:bluemix:public:iam::::role:Administrator"
               ],
               "service_name": "All Account Management services",
-              "notes": "[Optional] Required for consuming Account Configuration deployable architecture which creates resource group."
+              "notes": "[Optional] Required to deploy Cloud automation for account configuration, which creates foundational IBM Cloud account resources, like IAM settings, trusted profiles, access groups, and resource groups."
             },
             {
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::role:Administrator"
               ],
               "service_name": "All Identity and Access enabled services",
-              "notes": "[Optional] Required for consuming Account Configuration deployable architecture which creates resource group with account settings."
+              "notes": "[Optional] Required to deploy Cloud automation for account configuration, which creates foundational IBM Cloud account resources, like IAM settings, trusted profiles, access groups, and resource group with account settings."
             },
             {
               "role_crns": [
@@ -114,7 +114,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "kms",
-              "notes": "[Optional] Required if Key protect is used for encryption of Object Storage bucket which stores VPC flow logs."
+              "notes": "[Optional] Required to deploy Cloud automation for Key Protect, so you can use your own managed encryption keys."
             },
             {
               "role_crns": [
@@ -122,7 +122,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "hs-crypto",
-              "notes": "[Optional] Required if you are creating/configuring keys in an existing Hyper Protect Crypto Services (HPCS) instance for encryption."
+              "notes": "[Optional] Required if Hyper Protect Crypto Service is used for encryption."
             },
             {
               "role_crns": [
