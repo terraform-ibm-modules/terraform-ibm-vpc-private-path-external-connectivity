@@ -47,7 +47,7 @@
         },
         {
           "title": "Object Storage",
-          "description": "Optionally you can create and configure an [Object Storage bucket](https://cloud.ibm.com/docs/openshift?topic=openshift-storage-cos-understand) to store VPC flow logs as part of the deployment. You can provide an existing COS Instance or use the [Cloud automation for Object Storage]((https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-cos-68921490-2778-4930-ac6d-bae7be6cd958-global) for creating a new instance."
+          "description": "Optionally you can create and configure an [Object Storage bucket](https://cloud.ibm.com/docs/openshift?topic=openshift-storage-cos-understand) to store VPC flow logs as part of the deployment. You can provide an existing COS Instance or use the [Cloud automation for Object Storage](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-cos-68921490-2778-4930-ac6d-bae7be6cd958-global) for creating a new instance."
         },
         {
           "title": "KMS Encryption",
