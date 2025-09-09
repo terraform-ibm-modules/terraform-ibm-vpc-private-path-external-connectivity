@@ -24,7 +24,7 @@
         "solution"
       ],
       "short_description": "Deploys VPC Private Path service with integration of application load balancer for external connectivity.",
-      "long_description": "Private network connectivity is essential for IBM Cloud customers who prioritize privacy, security, and compliance.\n\nThrough Private Path services for VPC, providers can deliver their cloud and on-premises services over the IBM Cloud private network backbone, ensuring secure and private interactions for consumers.\n\n\nYou can use this solution to provision and configure a VPC Private Path service to securely connect services hosted in IBM Cloud VPC, on-premise or other reachable external locations.\n\nℹ️ This Terraform-based automation is part of a broader suite of IBM-maintained Infrastructure as Code (IaC) assets, each following the naming pattern \"Cloud automation for *servicename*\" and focusing on single IBM Cloud service. These single-service deployable architectures can be used on their own to streamline and automate service deployments through an [IaC approach](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-understanding-projects), or assembled together into a broader [automated IaC stack](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-config-stack) to automate the deployment of an end-to-end solution architecture.",
+      "long_description": "Private network connectivity is essential for IBM Cloud customers who prioritize privacy, security, and compliance.\n\nThrough [Private Path services for VPC](https://cloud.ibm.com/docs/vpc?topic=vpc-private-path-service-intro), providers can deliver their cloud and on-premises services over the IBM Cloud private network backbone, ensuring secure and private interactions for consumers.\n\n\nYou can use this solution to provision and configure a VPC Private Path service to securely connect services hosted in IBM Cloud VPC, on-premise or other reachable external locations.\n\nℹ️ This Terraform-based automation is part of a broader suite of IBM-maintained Infrastructure as Code (IaC) assets, each following the naming pattern \"Cloud automation for *servicename*\" and focusing on single IBM Cloud service. These single-service deployable architectures can be used on their own to streamline and automate service deployments through an [IaC approach](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-understanding-projects), or assembled together into a broader [automated IaC stack](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-config-stack) to automate the deployment of an end-to-end solution architecture.",
       "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/blob/main/README.md",
       "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/main/images/private_path.svg",
       "provider_name": "IBM",
@@ -39,19 +39,19 @@
         },
         {
           "title": "Private Path service",
-          "description": "Creates a VPC Private Path service that enables secure, private connectivity between VPC resources and external services over IBM Cloud's private network backbone. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-private-path-service-intro)"
+          "description": "Creates a [VPC Private Path service](https://cloud.ibm.com/docs/private-path?topic=private-path-overview&interface=cli&OR=PowerPoint#pps_overview-include-pps-use-case-5) that enables secure, private connectivity between VPC resources and external services over IBM Cloud's private network backbone."
         },
         {
           "title": "Observability",
-          "description": "This solution can leverage Cloud automation for Observability that supports configuring resources for logging, monitoring and activity tracker event routing (optional). [Learn more](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-observability-a3137d28-79e0-479d-8a24-758ebd5a0eab-global)"
+          "description": "This solution can optionally configure resources for logging, monitoring and activity tracker event routing."
         },
         {
           "title": "Object Storage",
-          "description": "Creates and configures an [Object Storage bucket](https://cloud.ibm.com/docs/openshift?topic=openshift-storage-cos-understand) to store VPC flow logs as part of the deployment. You can provide an existing COS Instance or use the Cloud automation for Object Storage for creating a new instance. [Learn more](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-cos-68921490-2778-4930-ac6d-bae7be6cd958-global)"
+          "description": "Optionally you can create and configure an [Object Storage bucket](https://cloud.ibm.com/docs/openshift?topic=openshift-storage-cos-understand) to store VPC flow logs as part of the deployment. You can provide an existing COS Instance or use the [Cloud automation for Object Storage]((https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-cos-68921490-2778-4930-ac6d-bae7be6cd958-global) for creating a new instance."
         },
         {
           "title": "KMS Encryption",
-          "description": "Optionally you can enable key management services(KMS) [encryption](https://cloud.ibm.com/docs/openshift?topic=openshift-encryption-secrets) of the Object Storage bucket using either a newly created key or an existing one. [Learn more](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-kms-2cad4789-fa90-4886-9c9e-857081c273ee-global)"
+          "description": "Optionally you can enable key management services (KMS) [encryption](https://cloud.ibm.com/docs/openshift?topic=openshift-encryption-secrets) of the Object Storage bucket using either a newly created key or an existing one. [Cloud automation for KMS](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-kms-2cad4789-fa90-4886-9c9e-857081c273ee-global) can be used for key management."
         }
       ],
       "support_details": "This product is in the community registry, as such support is handled through the [original repo](https://github.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity). If you experience issues please open an issue [here](https://github.com/terraform-ibm-modules/terraform-ibm-vpc-private-path-external-connectivity/issues). Please note this product is not supported via the IBM Cloud Support Center.",
@@ -84,21 +84,21 @@
                 "crn:v1:bluemix:public:iam::::role:Administrator"
               ],
               "service_name": "All Account Management services",
-              "notes": "[Optional] Required to deploy Cloud automation for account configuration, which creates foundational IBM Cloud account resources, like IAM settings, trusted profiles, access groups, and resource groups."
+              "notes": "[Optional] Required to create new resource groups when enabling the Account Configuration integration."
             },
             {
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::role:Administrator"
               ],
               "service_name": "All Identity and Access enabled services",
-              "notes": "[Optional] Required to deploy Cloud automation for account configuration, which creates foundational IBM Cloud account resources, like IAM settings, trusted profiles, access groups, and resource group with account settings."
+              "notes": "[Optional] Required to create new resource groups with account settings when enabling the Account Configuration integration."
             },
             {
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::role:Administrator"
               ],
               "service_name": "is.vpc",
-              "notes": "[Optional] Required if Cloud automation for Virtual Private Cloud(VPC) is enabled."
+              "notes": "[Optional] Required to create Virtual Private Cloud(VPC)."
             },
             {
               "role_crns": [
@@ -106,7 +106,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "cloud-object-storage",
-              "notes": "[Optional] Required if Cloud automation for Virtual Private Cloud(VPC) is enabled which sets up a bucket to store VPC flow logs."
+              "notes": "[Optional] Required if VPC Flow Logs are enabled."
             },
             {
               "role_crns": [
@@ -114,7 +114,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "kms",
-              "notes": "[Optional] Required to deploy Cloud automation for Key Protect, so you can use your own managed encryption keys."
+              "notes": "[Optional] Required if Key Protect is used for encryption."
             },
             {
               "role_crns": [
@@ -130,7 +130,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "sysdig-monitor",
-              "notes": "[Optional] Required if you are consuming Observability deployable architecture which sets up Cloud monitoring."
+              "notes": "[Optional] Required to create an instance of Cloud Monitoring."
             },
             {
               "role_crns": [
@@ -138,7 +138,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "logs",
-              "notes": "[Optional] Required if you are consuming Observability deployable architecture which sets up Cloud logs."
+              "notes": "[Optional] Required to create an instance of Cloud Logs."
             },
             {
               "role_crns": [
@@ -146,7 +146,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "atracker",
-              "notes": "[Optional] Required if you are consuming Observability deployable architecture which sets up Activity Tracker Event Routing."
+              "notes": "[Optional]  Required when enabling the Activity Tracker Event Routing."
             }
           ],
           "configuration": [
