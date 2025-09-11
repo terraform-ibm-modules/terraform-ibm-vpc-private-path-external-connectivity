@@ -429,7 +429,7 @@
             },
             {
               "name": "deploy-arch-ibm-vpc",
-              "description": "Configures the foundational VPC network infrastructure required for Private Path service deployment.",
+              "description": "Configures the VPC network infrastructure required for Private Path service deployment.",
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "flavors": [
                 "fully-configurable"
