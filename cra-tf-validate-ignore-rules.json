@@ -9,7 +9,7 @@
         {
             "scc_rule_id": "rule-d544f217-3723-4376-b3aa-037c5f201e8d",
             "description": "Check whether Application Load Balancer for VPC uses HTTPS (SSL & TLS) instead of HTTP",
-            "ignore_reason": "This rule is not relevant since ALB will be a member of the Private path NLB.",
+            "ignore_reason": "This rule is not relevant since ALB will be a member of the Private Path NLB.",
             "is_valid": false
         }
     ]
