@@ -115,7 +115,7 @@ variable "application_loadbalancer_pool_algorithm" {
 variable "application_loadbalancer_pool_member_port" {
   type        = number
   description = "The port where traffic is sent to the instance."
-  default     = 80
+  default     = 443
 }
 
 variable "application_loadbalancer_pool_health_delay" {
@@ -151,7 +151,7 @@ variable "application_loadbalancer_pool_protocol" {
 variable "application_loadbalancer_listener_port" {
   type        = number
   description = "The listener port for the Private Path network load balancer."
-  default     = 80
+  default     = 443
 }
 
 variable "application_loadbalancer_listener_protocol" {
@@ -191,7 +191,7 @@ variable "network_loadbalancer_name" {
 variable "network_loadbalancer_listener_port" {
   type        = number
   description = "The listener port for the Private Path network load balancer."
-  default     = 80
+  default     = 443
 }
 
 variable "network_loadbalancer_listener_accept_proxy_protocol" {
@@ -239,13 +239,13 @@ variable "network_loadbalancer_pool_health_monitor_url" {
 variable "network_loadbalancer_pool_health_monitor_port" {
   type        = number
   description = "The port on which the load balancer sends health check requests. By default, health checks are sent on the same port where traffic is sent to the instance."
-  default     = 80
+  default     = 443
 }
 
 variable "network_loadbalancer_pool_member_port" {
   type        = number
   description = "The port where traffic is sent to the instance."
-  default     = 80
+  default     = 443
 }
 
 ##############################################################################
