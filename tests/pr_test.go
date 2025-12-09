@@ -109,7 +109,7 @@ func TestRunFullyConfigurableInSchematics(t *testing.T) {
 		{Name: "region", Value: terraform.Output(t, existingTerraformOptions, "region"), DataType: "string"},
 		{Name: "existing_resource_group_name", Value: terraform.Output(t, existingTerraformOptions, "resource_group_name"), DataType: "string"},
 		{Name: "existing_subnet_id", Value: terraform.Output(t, existingTerraformOptions, "existing_subnet_id"), DataType: "string"},
-		{Name: "private_path_service_endpoints", Value: []string{"vpc-pps.example.com"}, DataType: "list(string)"},
+		{Name: "private_path_service_endpoints", Value: []string{"vpc-pps.dev.internal"}, DataType: "list(string)"},
 		{Name: "application_loadbalancer_pool_member_ip_address", Value: []string{terraform.Output(t, existingTerraformOptions, "member_ip_address")}, DataType: "list(string)"},
 	}
 	require.NoError(t, options.RunSchematicTest(), "This should not have errored")
@@ -138,7 +138,7 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 		{Name: "region", Value: terraform.Output(t, existingTerraformOptions, "region"), DataType: "string"},
 		{Name: "existing_resource_group_name", Value: terraform.Output(t, existingTerraformOptions, "resource_group_name"), DataType: "string"},
 		{Name: "existing_subnet_id", Value: terraform.Output(t, existingTerraformOptions, "existing_subnet_id"), DataType: "string"},
-		{Name: "private_path_service_endpoints", Value: []string{"vpc-pps.example.com"}, DataType: "list(string)"},
+		{Name: "private_path_service_endpoints", Value: []string{"vpc-pps.dev.internal"}, DataType: "list(string)"},
 		{Name: "application_loadbalancer_pool_member_ip_address", Value: []string{terraform.Output(t, existingTerraformOptions, "member_ip_address")}, DataType: "list(string)"},
 	}
 
