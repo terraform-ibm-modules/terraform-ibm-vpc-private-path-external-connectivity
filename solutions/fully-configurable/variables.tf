@@ -138,14 +138,14 @@ variable "application_loadbalancer_pool_health_timeout" {
 
 variable "application_loadbalancer_pool_health_type" {
   type        = string
-  description = "The protocol used to send health check messages to instances in the pool. Supported values are `tcp` or `http`."
-  default     = "http"
+  description = "The protocol used to send health check messages to instances in the pool. Supported values are `tcp`, `https` or `http`."
+  default     = "https"
 }
 
 variable "application_loadbalancer_pool_protocol" {
   type        = string
   description = "The protocol used to send traffic to instances in the pool. Supported values are `tcp`, `http`, `https` or `udp`."
-  default     = "http"
+  default     = "https"
 }
 
 variable "application_loadbalancer_listener_port" {
@@ -156,13 +156,13 @@ variable "application_loadbalancer_listener_port" {
 
 variable "application_loadbalancer_listener_protocol" {
   type        = string
-  description = "The protocol used to send traffic to instances in the pool. Supported values are `tcp`, `http`, `https` or `udp`."
-  default     = "http"
+  description = "The listener protocol used by instances in the application loadbalancer pool. Supported values are `tcp`, `http`, `https` or `udp`."
+  default     = "https"
 }
 
 variable "application_loadbalancer_listener_idle_timeout" {
   type        = number
-  description = "The protocol used to send traffic to instances in the pool. Supported values are `tcp`, `http`, `https` or `udp`."
+  description = "The idle connection timeout of the listener in seconds."
   default     = 50
 }
 
