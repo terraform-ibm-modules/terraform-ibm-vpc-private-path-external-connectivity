@@ -38,6 +38,11 @@ output "alb_listener_id" {
   value       = ibm_is_lb_listener.alb_frontend_listener.id
 }
 
+output "alb_listener_certificate_secret_id" {
+  description = "ID of the client to site vpn server certificate secret stored in Secrets Manager"
+  value       = var.application_loadbalancer_listener_certificate_crn == null ? module.secrets_manager_private_certificate[0].secret_id : module.application_loadbalancer_listener_certificate_crn_parser[0].service_instance
+}
+
 ## Private Path
 output "nlb_crn" {
   description = "The CRN for this load balancer."

@@ -15,12 +15,13 @@ import (
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/common"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testschematic"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/cloudinfo"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
 )
 
-const fullyConfigurableTerraformDir = "solutions/fully-configurable"
+const fullyConfigurableSolutionDir = "solutions/fully-configurable"
 
 // Define a struct with fields that match the structure of the YAML data
 const yamlLocation = "../common-dev-assets/common-go-assets/common-permanent-resources.yaml"
@@ -44,25 +45,30 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-func validateEnvVariable(t *testing.T, varName string) string {
-	val, present := os.LookupEnv(varName)
-	require.True(t, present, "%s environment variable not set", varName)
-	require.NotEqual(t, "", val, "%s environment variable is empty", varName)
-	return val
-}
+func setupFullyConfigurableOptions(t *testing.T, prefix string) (*testschematic.TestSchematicOptions, *terraform.Options) {
 
-func setupTerraform(t *testing.T, prefix, realTerraformDir string) *terraform.Options {
-	tempTerraformDir, err := files.CopyTerraformFolderToTemp(realTerraformDir, prefix)
-	require.NoError(t, err, "Failed to create temporary Terraform folder")
-	apiKey := validateEnvVariable(t, "TF_VAR_ibmcloud_api_key") // pragma: allowlist secret
-	region, err := testhelper.GetBestVpcRegion(apiKey, "../common-dev-assets/common-go-assets/cloudinfo-region-vpc-gen2-prefs.yaml", "eu-de")
-	require.NoError(t, err, "Failed to get best VPC region")
+	// ------------------------------------------------------------------------------------------------------
+	// Create SLZ VPC, resource group first
+	// ------------------------------------------------------------------------------------------------------
+	realTerraformDir := "./resources"
+	tempTerraformDir, _ := files.CopyTerraformFolderToTemp(realTerraformDir, fmt.Sprintf(prefix+"-%s", strings.ToLower(random.UniqueId())))
 
+	// Verify ibmcloud_api_key variable is set
+	checkVariable := "TF_VAR_ibmcloud_api_key"
+	val, present := os.LookupEnv(checkVariable)
+	require.True(t, present, checkVariable+" environment variable not set")
+	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
+
+	// Programmatically determine region to use based on availability
+	region, _ := testhelper.GetBestVpcRegion(val, "../common-dev-assets/common-go-assets/cloudinfo-region-vpc-gen2-prefs.yaml", "eu-de")
+
+	logger.Log(t, "Tempdir: ", tempTerraformDir)
 	existingTerraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: tempTerraformDir,
 		Vars: map[string]interface{}{
-			"prefix": prefix,
-			"region": region,
+			"prefix":        prefix,
+			"region":        region,
+			"resource_tags": []string{"test-schematic"},
 		},
 		// Set Upgrade to true to ensure latest version of providers and modules are used by terratest.
 		// This is the same as setting the -upgrade=true flag with terraform.
@@ -70,39 +76,27 @@ func setupTerraform(t *testing.T, prefix, realTerraformDir string) *terraform.Op
 	})
 
 	terraform.WorkspaceSelectOrNew(t, existingTerraformOptions, prefix)
-	_, err = terraform.InitAndApplyE(t, existingTerraformOptions)
-	require.NoError(t, err, "Init and Apply of temp existing resource failed")
+	_, existErr := terraform.InitAndApplyE(t, existingTerraformOptions)
 
-	return existingTerraformOptions
-}
-
-func cleanupTerraform(t *testing.T, options *terraform.Options, prefix string) {
-	if t.Failed() && strings.ToLower(os.Getenv("DO_NOT_DESTROY_ON_FAILURE")) == "true" {
-		fmt.Println("Terratest failed. Debug the test and delete resources manually.")
-		return
+	if existErr != nil {
+		assert.True(t, existErr == nil, "Init and Apply of temp resources (SLZ VPC and Secrets Manager) failed")
+		return nil, nil
 	}
-	logger.Log(t, "START: Destroy (existing resources)")
-	terraform.Destroy(t, options)
-	terraform.WorkspaceDelete(t, options, prefix)
-	logger.Log(t, "END: Destroy (existing resources)")
-}
-
-func TestRunFullyConfigurableInSchematics(t *testing.T) {
-	t.Parallel()
-
-	// Provision resources first
-	prefix := fmt.Sprintf("ce-pp-%s", strings.ToLower(random.UniqueId()))
-	existingTerraformOptions := setupTerraform(t, prefix, "./resources")
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
-		Testing:               t,
-		Prefix:                "ce-pp",
-		TarIncludePatterns:    []string{"*.tf", fullyConfigurableTerraformDir + "/*.*", "scripts/*.sh"},
-		TemplateFolder:        fullyConfigurableTerraformDir,
-		Tags:                  []string{"test-schematic"},
-		DeleteWorkspaceOnFail: false,
+		Testing: t,
+		Prefix:  prefix,
+		TarIncludePatterns: []string{
+			fullyConfigurableSolutionDir + "/*.*",
+			"*.tf",
+		},
+		ResourceGroup:          terraform.Output(t, existingTerraformOptions, "resource_group_name"),
+		TemplateFolder:         fullyConfigurableSolutionDir,
+		Tags:                   []string{"test-schematic"},
+		DeleteWorkspaceOnFail:  false,
+		WaitJobCompleteMinutes: 60,
+		Region:                 region,
 	})
-
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
 		{Name: "prefix", Value: prefix, DataType: "string"},
@@ -111,10 +105,36 @@ func TestRunFullyConfigurableInSchematics(t *testing.T) {
 		{Name: "existing_subnet_id", Value: terraform.Output(t, existingTerraformOptions, "existing_subnet_id"), DataType: "string"},
 		{Name: "private_path_service_endpoints", Value: []string{"vpc-pps.dev.internal"}, DataType: "list(string)"},
 		{Name: "application_loadbalancer_pool_member_ip_address", Value: []string{terraform.Output(t, existingTerraformOptions, "member_ip_address")}, DataType: "list(string)"},
-		{Name: "application_loadbalancer_listener_protocol", Value: "http", DataType: "string"},
+		{Name: "private_cert_engine_config_root_ca_common_name", Value: fmt.Sprintf("%s%s", options.Prefix, ".com"), DataType: "string"},
+		{Name: "private_cert_engine_config_template_name", Value: permanentResources["privateCertTemplateName"], DataType: "string"},
+		{Name: "existing_secrets_manager_instance_crn", Value: permanentResources["secretsManagerCRN"], DataType: "string"},
 	}
-	require.NoError(t, options.RunSchematicTest(), "This should not have errored")
-	cleanupTerraform(t, existingTerraformOptions, prefix)
+
+	return options, existingTerraformOptions
+}
+
+func TestRunFullyConfigurableInSchematics(t *testing.T) {
+	t.Parallel()
+	prefix := fmt.Sprintf("ce-pp-%s", strings.ToLower(random.UniqueId()))
+	options, existingTerraformOptions := setupFullyConfigurableOptions(t, prefix)
+	if options == nil || existingTerraformOptions == nil {
+		t.Fatal("Failed to create agent schematic options (prerequisite Terraform deployment failed)")
+	}
+
+	err := options.RunSchematicTest()
+	assert.Nil(t, err, "This should not have errored")
+
+	// Check if "DO_NOT_DESTROY_ON_FAILURE" is set
+	envVal, _ := os.LookupEnv("DO_NOT_DESTROY_ON_FAILURE")
+	// Destroy the temporary existing resources if required
+	if t.Failed() && strings.ToLower(envVal) == "true" {
+		fmt.Println("Terratest failed. Debug the test and delete resources manually.")
+	} else {
+		logger.Log(t, "START: Destroy (existing resources)")
+		terraform.Destroy(t, existingTerraformOptions)
+		terraform.WorkspaceDelete(t, existingTerraformOptions, prefix)
+		logger.Log(t, "END: Destroy (existing resources)")
+	}
 }
 
 func TestRunUpgradeFullyConfigurable(t *testing.T) {
@@ -122,28 +142,107 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 
 	// Provision existing resources first
 	prefix := fmt.Sprintf("pp-upg-%s", strings.ToLower(random.UniqueId()))
-	existingTerraformOptions := setupTerraform(t, prefix, "./resources")
+	options, existingTerraformOptions := setupFullyConfigurableOptions(t, prefix)
 
-	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
-		Testing:               t,
-		Prefix:                "ce-pp-upg",
-		TarIncludePatterns:    []string{"*.tf", "scripts/*.sh", fullyConfigurableTerraformDir + "/*.*"},
-		TemplateFolder:        fullyConfigurableTerraformDir,
-		Tags:                  []string{"test-schematic"},
-		DeleteWorkspaceOnFail: false,
-	})
+	if options == nil || existingTerraformOptions == nil {
+		t.Fatal("Failed to create agent schematic options (prerequisite Terraform deployment failed)")
+	}
+	options.CheckApplyResultForUpgrade = true
 
-	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
-		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
-		{Name: "prefix", Value: prefix, DataType: "string"},
-		{Name: "region", Value: terraform.Output(t, existingTerraformOptions, "region"), DataType: "string"},
-		{Name: "existing_resource_group_name", Value: terraform.Output(t, existingTerraformOptions, "resource_group_name"), DataType: "string"},
-		{Name: "existing_subnet_id", Value: terraform.Output(t, existingTerraformOptions, "existing_subnet_id"), DataType: "string"},
-		{Name: "private_path_service_endpoints", Value: []string{"vpc-pps.dev.internal"}, DataType: "list(string)"},
-		{Name: "application_loadbalancer_pool_member_ip_address", Value: []string{terraform.Output(t, existingTerraformOptions, "member_ip_address")}, DataType: "list(string)"},
-		{Name: "application_loadbalancer_listener_protocol", Value: "http", DataType: "string"},
+	err := options.RunSchematicUpgradeTest()
+	if !options.UpgradeTestSkipped {
+		assert.NoError(t, err, "Upgrade test should complete without errors")
 	}
 
-	require.NoError(t, options.RunSchematicUpgradeTest(), "This should not have errored")
-	cleanupTerraform(t, existingTerraformOptions, prefix)
+	// Check if "DO_NOT_DESTROY_ON_FAILURE" is set
+	envVal, _ := os.LookupEnv("DO_NOT_DESTROY_ON_FAILURE")
+	// Destroy the temporary existing resources if required
+	if t.Failed() && strings.ToLower(envVal) == "true" {
+		fmt.Println("Terratest failed. Debug the test and delete resources manually.")
+	} else {
+		logger.Log(t, "START: Destroy (existing resources)")
+		terraform.Destroy(t, existingTerraformOptions)
+		terraform.WorkspaceDelete(t, existingTerraformOptions, prefix)
+		logger.Log(t, "END: Destroy (existing resources)")
+	}
+}
+
+func TestFullyConfigurableSolutionExistingResources(t *testing.T) {
+	t.Parallel()
+
+	// ------------------------------------------------------------------------------------
+	// Create SLZ VPC, SM private cert, resource group first
+	// ------------------------------------------------------------------------------------
+
+	prefix := fmt.Sprintf("cts-s-ext-%s", strings.ToLower(random.UniqueId()))
+	realTerraformDir := "./resources"
+	tempTerraformDir, _ := files.CopyTerraformFolderToTemp(realTerraformDir, fmt.Sprintf(prefix+"-%s", strings.ToLower(random.UniqueId())))
+	tags := common.GetTagsFromTravis()
+
+	// Verify ibmcloud_api_key variable is set
+	checkVariable := "TF_VAR_ibmcloud_api_key"
+	val, present := os.LookupEnv(checkVariable)
+	require.True(t, present, checkVariable+" environment variable not set")
+	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
+
+	// Programmatically determine region to use based on availability
+	region, _ := testhelper.GetBestVpcRegion(val, "../common-dev-assets/common-go-assets/cloudinfo-region-vpc-gen2-prefs.yaml", "eu-de")
+
+	logger.Log(t, "Tempdir: ", tempTerraformDir)
+	existingTerraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
+		TerraformDir: tempTerraformDir,
+		Vars: map[string]interface{}{
+			"prefix":                                prefix,
+			"region":                                region,
+			"resource_tags":                         tags,
+			"existing_secrets_manager_instance_crn": permanentResources["secretsManagerCRN"],
+			"certificate_template_name":             permanentResources["privateCertTemplateName"],
+		},
+		// Set Upgrade to true to ensure latest version of providers and modules are used by terratest.
+		// This is the same as setting the -upgrade=true flag with terraform.
+		Upgrade: true,
+	})
+
+	terraform.WorkspaceSelectOrNew(t, existingTerraformOptions, prefix)
+
+	_, existErr := terraform.InitAndApplyE(t, existingTerraformOptions)
+	if existErr != nil {
+		assert.True(t, existErr == nil, "Init and Apply of temp existing resource failed")
+	} else {
+		// ------------------------------------------------------------------------------------
+		// Deploy Private path solution
+		// ------------------------------------------------------------------------------------
+		options := testhelper.TestOptionsDefault(&testhelper.TestOptions{
+			Testing:      t,
+			TerraformDir: fullyConfigurableSolutionDir,
+			// Do not hard fail the test if the implicit destroy steps fail to allow a full destroy of resource to occur
+			ImplicitRequired: false,
+			TerraformVars: map[string]interface{}{
+				"prefix":                       prefix,
+				"existing_resource_group_name": terraform.Output(t, existingTerraformOptions, "resource_group_name"),
+				"region":                       terraform.Output(t, existingTerraformOptions, "region"),
+				"application_loadbalancer_listener_certificate_crn": terraform.Output(t, existingTerraformOptions, "sm_private_cert_crn"),
+				"existing_subnet_id":                              []string{terraform.Output(t, existingTerraformOptions, "existing_subnet_id")},
+				"existing_secrets_manager_instance_crn":           permanentResources["secretsManagerCRN"],
+				"private_path_service_endpoints":                  []string{"vpc-pps.dev.internal"},
+				"application_loadbalancer_pool_member_ip_address": []string{terraform.Output(t, existingTerraformOptions, "member_ip_address")},
+				"provider_visibility":                             "public",
+			},
+		})
+		output, err := options.RunTestConsistency()
+		assert.Nil(t, err, "This should not have errored")
+		assert.NotNil(t, output, "Expected some output")
+	}
+
+	// Check if "DO_NOT_DESTROY_ON_FAILURE" is set
+	envVal, _ := os.LookupEnv("DO_NOT_DESTROY_ON_FAILURE")
+	// Destroy the temporary existing resources if required
+	if t.Failed() && strings.ToLower(envVal) == "true" {
+		fmt.Println("Terratest failed. Debug the test and delete resources manually.")
+	} else {
+		logger.Log(t, "START: Destroy (existing resources)")
+		terraform.Destroy(t, existingTerraformOptions)
+		terraform.WorkspaceDelete(t, existingTerraformOptions, prefix)
+		logger.Log(t, "END: Destroy (existing resources)")
+	}
 }
