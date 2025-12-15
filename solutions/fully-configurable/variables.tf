@@ -209,7 +209,7 @@ variable "application_loadbalancer_listener_certificate_crn" {
 
 variable "existing_secrets_manager_instance_crn" {
   type        = string
-  description = "The CRN of existing secrets manager where the certificate to use for the VPN is stored or where the new private certificate will be created. [Learn more](https://cloud.ibm.com/docs/secrets-manager?topic=secrets-manager-getting-started)"
+  description = "The CRN of existing secrets manager where the certificate to use for the ALB listener is stored or where the new private certificate will be created. [Learn more](https://cloud.ibm.com/docs/secrets-manager?topic=secrets-manager-getting-started)"
 }
 
 variable "existing_secrets_manager_secret_group_id" {
@@ -220,7 +220,7 @@ variable "existing_secrets_manager_secret_group_id" {
 
 variable "private_cert_engine_config_root_ca_common_name" {
   type        = string
-  description = "A fully qualified domain name or host domain name for the certificate to be created. Only used when `application_loadbalancer_listener_certificate_crn` input variable is `null`. [Learn more](https://cloud.ibm.com/docs/secrets-manager?topic=secrets-manager-private-certificates&interface=ui)"
+  description = "A fully qualified domain name or host domain name for the certificate to be created. Required if `application_loadbalancer_listener_certificate_crn` input variable is `null`. [Learn more](https://cloud.ibm.com/docs/secrets-manager?topic=secrets-manager-private-certificates&interface=ui)"
   default     = null
 }
 
