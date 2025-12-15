@@ -65,6 +65,7 @@
           "name": "fully-configurable",
           "index": 1,
           "install_type": "fullstack",
+          "short_description": "Ideal for users who want flexibility with a reliable starting point.",
           "working_directory": "solutions/fully-configurable",
           "iam_permissions": [
             {
@@ -177,31 +178,6 @@
               ]
             },
             {
-              "key": "subnets",
-              "default_value": "{\n    zone-1 = [\n      {\n        name           = \"subnet-a\"\n        cidr           = \"10.10.10.0/24\"\n        public_gateway = true\n        acl_name       = \"vpc-acl\"\n        no_addr_prefix = false\n      }\n    ],\n    zone-2 = [\n      {\n        name           = \"subnet-b\"\n        cidr           = \"10.20.10.0/24\"\n        public_gateway = true\n        acl_name       = \"vpc-acl\"\n        no_addr_prefix = false\n      }\n    ],\n    zone-3 = []\n  }",
-              "description": "List of subnets for the vpc. For each item in each array, a subnet will be created. Items can be either CIDR blocks or total ipv4 addresses. Public gateways will be enabled only in zones where a gateway has been created. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#subnets-).",
-              "required": false,
-              "virtual": true,
-              "custom_config": {
-                "grouping": "deployment",
-                "original_grouping": "deployment",
-                "type": "code_editor"
-              }
-            },
-            {
-              "key": "network_acls",
-              "type": "list(object)",
-              "default_value": "[\n  {\n    name                         = \"vpc-acl\"\n    add_ibm_cloud_internal_rules = true\n    add_vpc_connectivity_rules   = true\n    prepend_ibm_rules            = true\n    rules = [\n      {\n        name      = \"allow-all-443-inbound\"\n        action    = \"allow\"\n        direction = \"inbound\"\n        tcp = {\n          port_min = 443\n          port_max = 443\n        }\n        destination = \"0.0.0.0/0\"\n        source      = \"0.0.0.0/0\"\n      },\n      {\n        name      = \"allow-all-80-inbound\"\n        action    = \"allow\"\n        direction = \"inbound\"\n        tcp = {\n          port_min        = 80\n          port_max        = 80\n          source_port_min = 80\n          source_port_max = 80\n        }\n        destination = \"0.0.0.0/0\"\n        source      = \"0.0.0.0/0\"\n      },\n      {\n        name      = \"allow-all-ingress-inbound\"\n        action    = \"allow\"\n        direction = \"inbound\"\n        tcp = {\n          source_port_min = 30000\n          source_port_max = 32767\n        }\n        destination = \"0.0.0.0/0\"\n        source      = \"0.0.0.0/0\"\n      },\n      {\n        name      = \"allow-all-443-outbound\"\n        action    = \"allow\"\n        direction = \"outbound\"\n        tcp = {\n          source_port_min = 443\n          source_port_max = 443\n        }\n        destination = \"0.0.0.0/0\"\n        source      = \"0.0.0.0/0\"\n      },\n      {\n        name      = \"allow-all-80-outbound\"\n        action    = \"allow\"\n        direction = \"outbound\"\n        tcp = {\n          source_port_min = 80\n          source_port_max = 80\n          port_min        = 80\n          port_max        = 80\n        }\n        destination = \"0.0.0.0/0\"\n        source      = \"0.0.0.0/0\"\n      },\n      {\n        name      = \"allow-all-ingress-outbound\"\n        action    = \"allow\"\n        direction = \"outbound\"\n        tcp = {\n          port_min = 30000\n          port_max = 32767\n        }\n        destination = \"0.0.0.0/0\"\n        source      = \"0.0.0.0/0\"\n      },\n      {\n        name      = \"allow-udp-80-443-inbound\"\n        action    = \"allow\"\n        direction = \"inbound\"\n        udp = {\n          port_min = 80\n          port_max = 443\n        }\n        destination = \"0.0.0.0/0\"\n        source      = \"0.0.0.0/0\"\n      },\n      {\n        name      = \"allow-udp-all-outbound\"\n        action    = \"allow\"\n        direction = \"outbound\"\n        udp = {\n          port_min        = 1\n          port_max        = 65535\n          source_port_min = 1\n          source_port_max = 65535\n        }\n        destination = \"0.0.0.0/0\"\n        source      = \"0.0.0.0/0\"\n      }\n    ]\n  }\n]",
-              "description": "The list of ACLs to create. Provide at least one rule for each ACL. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#network-acls-).",
-              "required": false,
-              "virtual": true,
-              "custom_config": {
-                "type": "code_editor",
-                "grouping": "deployment",
-                "original_grouping": "deployment"
-              }
-            },
-            {
               "key": "enable_platform_metrics",
               "type": "boolean",
               "default_value": false,
@@ -222,11 +198,12 @@
             },
             {
               "key": "logs_routing_tenant_regions",
-              "type": "list(string)",
+              "type": "array",
               "default_value": [],
-              "description": "To manage platform logs that are generated by IBM Cloud services in a region of IBM Cloud, you must create a tenant in each region that you operate. Pass a list of regions to create a tenant in. [Learn more](https://cloud.ibm.com/docs/logs-router?topic=logs-router-about-platform-logs).",
+              "description": "To manage platform logs that are generated by IBM Cloud services in a region of IBM Cloud, you must create a tenant in each region that you operate. Pass a list of regions to create a tenant in. For example: [\"us-south\", \"us-east\"]. [Learn more](https://cloud.ibm.com/docs/logs-router?topic=logs-router-about-platform-logs).",
               "required": true,
               "virtual": true,
+              "hidden": true,
               "custom_config": {
                 "grouping": "deployment",
                 "original_grouping": "deployment",
@@ -249,13 +226,24 @@
             },
             {
               "key": "existing_vpc_crn",
+              "display_name": "existing_vpc",
               "value_constraints": [
                 {
                   "type": "regex",
                   "description": "The value provided for 'existing_vpc_crn' is not valid.",
                   "value": "^crn:(.*:){3}is:(.*:){2}:vpc:[0-9a-z]{4}-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
                 }
-              ]
+              ],
+              "custom_config": {
+                "type": "platform_resource",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "resourceType": "vpc",
+                  "selection": "single_select",
+                  "valueType": "crn"
+                }
+              }
             },
             {
               "key": "existing_subnet_id",
@@ -359,6 +347,25 @@
                   "type": "regex",
                   "description": "The value provided for 'application_loadbalancer_listener_certificate_crn' is not valid.",
                   "value": "^__NULL__$|^crn:(.*:){3}secrets-manager:(.*:){2}[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}:secret:[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}$"
+                }
+              ]
+            },
+            {
+              "key": "secrets_manager_service_plan",
+              "type_metadata": "string",
+              "virtual": true,
+              "required": true,
+              "default_value": "standard",
+              "options": [
+                {
+                  "description": "Centrally manage secrets in a dedicated instance. Unlimited Secrets Manager instances per IBM Cloud account. Unlimited access to all service capabilities.",
+                  "displayname": "Standard",
+                  "value": "standard"
+                },
+                {
+                  "description": "Choose this option only if your account does not already have a Trial plan instance. Only one Trial plan instance is allowed per account. After it expires, upgrade to the Standard plan to keep using Secrets Manager.",
+                  "displayname": "Trial (30 days)",
+                  "value": "trial"
                 }
               ]
             },
@@ -580,6 +587,65 @@
                   "value": "public-and-private"
                 }
               ]
+            },
+            {
+              "key": "existing_cos_instance_crn",
+              "display_name": "existing_cos_instance",
+              "hidden": true,
+              "value_constraints": [
+                {
+                  "type": "regex",
+                  "description": "The value provided for 'existing_cos_instance' is not valid.",
+                  "value": "^crn:(.*:){3}cloud-object-storage:(.*:){2}[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}::$"
+                }
+              ],
+              "custom_config": {
+                "type": "platform_resource",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "resourceType": "cloud-object-storage",
+                  "selection": "single_select",
+                  "valueType": "crn"
+                }
+              }
+            },
+                        {
+              "key": "subnets",
+              "default_value": "{\n    zone-1 = [\n      {\n        name           = \"subnet-a\"\n        cidr           = \"10.10.10.0/24\"\n        public_gateway = true\n        acl_name       = \"vpc-acl\"\n        no_addr_prefix = false\n      }\n    ],\n    zone-2 = [\n      {\n        name           = \"subnet-b\"\n        cidr           = \"10.20.10.0/24\"\n        public_gateway = true\n        acl_name       = \"vpc-acl\"\n        no_addr_prefix = false\n      }\n    ],\n    zone-3 = [\n      {\n        name           = \"subnet-c\"\n        cidr           = \"10.30.10.0/24\"\n        public_gateway = true\n        acl_name       = \"vpc-acl\"\n        no_addr_prefix = false\n      }\n    ]\n  }",
+              "description": "List of subnets for the vpc. For each item in each array, a subnet will be created. Items can be either CIDR blocks or total ipv4 addresses. Public gateways will be enabled only in zones where a gateway has been created. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#subnets-).",
+              "required": false,
+              "virtual": true,
+              "hidden": true,
+              "custom_config": {
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "type": "code_editor",
+                "config_constraints": {
+                  "supportedLanguages": [
+                    "hcl"
+                  ]
+                }
+              }
+            },
+            {
+              "key": "network_acls",
+              "type": "list(object)",
+              "default_value": "[\n  { name                         = \"vpc-acl\"\n    add_ibm_cloud_internal_rules = true\n    add_vpc_connectivity_rules   = true\n    prepend_ibm_rules            = true\n    rules = [\n      {\n        name      = \"allow-443-inbound-source\"\n        action    = \"allow\"\n        direction = \"inbound\"\n        tcp = {\n          source_port_min = 443\n          source_port_max = 443\n        }\n        destination = \"0.0.0.0/0\"\n        source      = \"0.0.0.0/0\"\n      },\n      {\n        name      = \"allow-443-inbound-dest\"\n        action    = \"allow\"\n        direction = \"inbound\"\n        tcp = {\n          port_max = 443\n          port_min = 443\n        }\n        destination = \"0.0.0.0/0\"\n        source      = \"0.0.0.0/0\"\n      },\n      {\n        name      = \"allow-all-80-inbound\"\n        action    = \"allow\"\n        direction = \"inbound\"\n        tcp = {\n          source_port_min = 80\n          source_port_max = 80\n        }\n        destination = \"0.0.0.0/0\"\n        source      = \"0.0.0.0/0\"\n      },\n      {\n        name      = \"allow-all-ingress-inbound\"\n        action    = \"allow\"\n        direction = \"inbound\"\n        tcp = {\n          source_port_min = 30000\n          source_port_max = 32767\n        }\n        destination = \"0.0.0.0/0\"\n        source      = \"0.0.0.0/0\"\n      },\n      {\n        name      = \"allow-443-outbound-source\"\n        action    = \"allow\"\n        direction = \"outbound\"\n        tcp = {\n          source_port_min = 443\n          source_port_max = 443\n        }\n        destination = \"0.0.0.0/0\"\n        source      = \"0.0.0.0/0\"\n      },\n      {\n        name      = \"allow-443-outbound-dest\"\n        action    = \"allow\"\n        direction = \"outbound\"\n        tcp = {\n          port_min = 443\n          port_max = 443\n        }\n        destination = \"0.0.0.0/0\"\n        source      = \"0.0.0.0/0\"\n      },\n      {\n        name      = \"allow-all-80-outbound\"\n        action    = \"allow\"\n        direction = \"outbound\"\n        tcp = {\n          port_min = 80\n          port_max = 80\n        }\n        destination = \"0.0.0.0/0\"\n        source      = \"0.0.0.0/0\"\n      },\n      {\n        name      = \"allow-all-ingress-outbound\"\n        action    = \"allow\"\n        direction = \"outbound\"\n        tcp = {\n          port_min = 30000\n          port_max = 32767\n        }\n        destination = \"0.0.0.0/0\"\n        source      = \"0.0.0.0/0\"\n      }\n    ]\n  }\n]",
+              "description": "The list of ACLs to create. Provide at least one rule for each ACL. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#network-acls-).",
+              "required": false,
+              "virtual": true,
+              "hidden": true,
+              "custom_config": {
+                "type": "code_editor",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "supportedLanguages": [
+                    "hcl"
+                  ]
+                }
+              }
             }
           ],
           "architecture": {
@@ -645,10 +711,263 @@
                   "dependency_input": "network_acls",
                   "version_input": "network_acls",
                   "reference_version": true
+                }
+              ]
+            },
+            {
+              "name": "deploy-arch-ibm-kms",
+              "description": "Integrate IBM Key Protect to manage encryption keys for your cluster, securing persistent volumes and supporting compliance. If unselected, encryption is still applied using IBM-managed keys.",
+              "id": "2cad4789-fa90-4886-9c9e-857081c273ee-global",
+              "version": "v5.4.8",
+              "flavors": [
+                "fully-configurable"
+              ],
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "optional": true,
+              "on_by_default": true,
+              "input_mapping": [
+                {
+                  "version_input": "kms_encryption_enabled_cluster",
+                  "value": true
+                },
+                {
+                  "dependency_output": "kms_instance_crn",
+                  "version_input": "existing_kms_instance_crn"
+                },
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "existing_resource_group_name",
+                  "version_input": "existing_resource_group_name",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "region",
+                  "version_input": "region",
+                  "reference_version": true
+                }
+              ]
+            },
+            {
+              "name": "deploy-arch-ibm-cos",
+              "description": "Set up a Cloud Object Storage (COS) instance and bucket to serve as internal registry storage for your OpenShift cluster.",
+              "id": "68921490-2778-4930-ac6d-bae7be6cd958-global",
+              "version": "v10.5.5",
+              "flavors": [
+                "instance"
+              ],
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "optional": false,
+              "on_by_default": true,
+              "input_mapping": [
+                {
+                  "dependency_output": "cos_instance_crn",
+                  "version_input": "existing_cos_instance_crn"
+                },
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "existing_resource_group_name",
+                  "version_input": "existing_resource_group_name",
+                  "reference_version": true
+                }
+              ]
+            },
+            {
+              "name": "deploy-arch-ibm-cloud-logs",
+              "description": "Set up an IBM Cloud Logs instance to analyze platform logs.",
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "flavors": [
+                "fully-configurable"
+              ],
+              "id": "63d8ae58-fbf3-41ce-b844-0fb5b85882ab-global",
+              "version": "v1.9.10",
+              "optional": true,
+              "on_by_default": true,
+              "input_mapping": [
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "existing_resource_group_name",
+                  "version_input": "existing_resource_group_name",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "region",
+                  "version_input": "region",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "existing_cos_instance_crn",
+                  "version_input": "existing_cos_instance_crn",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "existing_kms_instance_crn",
+                  "version_input": "existing_kms_instance_crn",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "logs_routing_tenant_regions",
+                  "version_input": "logs_routing_tenant_regions",
+                  "reference_version": true
+                }
+              ]
+            },
+            {
+              "name": "deploy-arch-ibm-cloud-monitoring",
+              "description": "Set up a Cloud Monitoring instance to collect platform metrics.",
+              "id": "73debdbf-894f-4c14-81c7-5ece3a70b67d-global",
+              "version": "v1.10.6",
+              "flavors": [
+                "fully-configurable"
+              ],
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "optional": true,
+              "on_by_default": true,
+              "input_mapping": [
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "existing_resource_group_name",
+                  "version_input": "existing_resource_group_name",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "region",
+                  "version_input": "region",
+                  "reference_version": true
                 },
                 {
                   "dependency_input": "enable_platform_metrics",
                   "version_input": "enable_platform_metrics",
+                  "reference_version": true
+                }
+              ]
+            },
+            {
+              "name": "deploy-arch-ibm-activity-tracker",
+              "description": "Configure Activity Tracker Event Routing to direct auditing events appropriately.",
+              "id": "918453c3-4f97-4583-8c4a-83ef12fc7916-global",
+              "version": "v1.4.11",
+              "flavors": [
+                "fully-configurable"
+              ],
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "optional": true,
+              "on_by_default": true,
+              "input_mapping": [
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "region",
+                  "version_input": "region",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "existing_resource_group_name",
+                  "version_input": "existing_resource_group_name",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "existing_cos_instance_crn",
+                  "version_input": "existing_cos_instance_crn",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "existing_kms_instance_crn",
+                  "version_input": "existing_kms_instance_crn",
+                  "reference_version": true
+                }
+              ]
+            },
+            {
+              "name": "deploy-arch-ibm-secrets-manager",
+              "description": "Provision a Secrets Manager instance to securely store and manage sensitive credentials—such as certificates—used by services integrated with your cluster.",
+              "id": "6d6ebc76-7bbd-42f5-8bc7-78f4fabd5944-global",
+              "version": "v2.11.6",
+              "flavors": [
+                "fully-configurable"
+              ],
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "optional": true,
+              "on_by_default": true,
+              "input_mapping": [
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "existing_resource_group_name",
+                  "version_input": "existing_resource_group_name",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "region",
+                  "version_input": "region",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "service_plan",
+                  "version_input": "secrets_manager_service_plan",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "secrets_manager_endpoint_type",
+                  "version_input": "secrets_manager_endpoint_type",
+                  "reference_version": true
+                },
+                {
+                  "dependency_output": "secrets_manager_crn",
+                  "version_input": "existing_secrets_manager_instance_crn"
+                },
+                {
+                  "version_input": "enable_secrets_manager_integration",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "name": "deploy-arch-ibm-scc-workload-protection",
+              "description": "Integrate with Workload Protection to monitor and manage your cluster’s security posture, helping detect misconfigurations and enforce compliance.",
+              "id": "4322cf44-2289-49aa-a719-dd79e39b14dc-global",
+              "version": "v1.15.3",
+              "flavors": [
+                "fully-configurable"
+              ],
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "optional": true,
+              "on_by_default": true,
+              "input_mapping": [
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "existing_resource_group_name",
+                  "version_input": "existing_resource_group_name",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "region",
+                  "version_input": "region",
                   "reference_version": true
                 }
               ]
