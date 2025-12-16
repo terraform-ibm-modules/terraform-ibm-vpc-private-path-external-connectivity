@@ -5,7 +5,7 @@
 module "mock_resource_group" {
   source              = "terraform-ibm-modules/resource-group/ibm"
   version             = "1.4.3"
-  resource_group_name = "${var.prefix}-rg"
+  resource_group_name = "${var.prefix}-mock-rg"
 }
 
 ##############################################################################
