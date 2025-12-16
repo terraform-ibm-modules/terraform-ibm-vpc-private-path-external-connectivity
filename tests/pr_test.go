@@ -262,8 +262,9 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 		"deploy-arch-ibm-is-private-path-ext-conn",
 		"fully-configurable",
 		map[string]interface{}{
-			"region":                       "eu-de",
-			"secrets_manager_service_plan": "trial",
+			"region":                         "eu-de",
+			"secrets_manager_service_plan":   "trial",
+			"private_path_service_endpoints": []string{"vpc-pps.dev.internal"},
 		},
 	)
 
