@@ -248,10 +248,8 @@ func TestFullyConfigurableSolutionExistingResources(t *testing.T) {
 	}
 }
 
-// Skipping addons test due to this bug: https://github.ibm.com/ibmcloud/content-catalog/issues/6057
 func TestAddonsDefaultConfiguration(t *testing.T) {
-
-	t.Skip()
+	t.Parallel()
 
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
 		Testing:   t,
