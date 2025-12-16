@@ -249,7 +249,7 @@ func TestFullyConfigurableSolutionExistingResources(t *testing.T) {
 }
 
 func TestAddonsDefaultConfiguration(t *testing.T) {
-	t.Parallel()
+	t.Skip() // See, https://github.ibm.com/ibmcloud/content-catalog/issues/6057
 
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
 		Testing:   t,
