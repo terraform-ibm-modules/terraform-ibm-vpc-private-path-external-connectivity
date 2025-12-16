@@ -3,5 +3,6 @@
   "region": "us-south",
   "prefix": $PREFIX,
   "private_path_name": $PREFIX,
-  "private_path_service_endpoints": ["vpc-pps.dev.internal"]
+  "private_path_service_endpoints": ["vpc-pps.dev.internal"],
+  "existing_secrets_manager_instance_crn": $SM_CRN
 }

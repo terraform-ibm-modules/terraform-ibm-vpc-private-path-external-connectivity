@@ -223,7 +223,7 @@ func TestFullyConfigurableSolutionExistingResources(t *testing.T) {
 				"existing_resource_group_name": terraform.Output(t, existingTerraformOptions, "resource_group_name"),
 				"region":                       terraform.Output(t, existingTerraformOptions, "region"),
 				"application_loadbalancer_listener_certificate_crn": terraform.Output(t, existingTerraformOptions, "sm_private_cert_crn"),
-				"existing_subnet_id":                              []string{terraform.Output(t, existingTerraformOptions, "existing_subnet_id")},
+				"existing_subnet_id":                              terraform.Output(t, existingTerraformOptions, "existing_subnet_id"),
 				"existing_secrets_manager_instance_crn":           permanentResources["secretsManagerCRN"],
 				"private_path_service_endpoints":                  []string{"vpc-pps.dev.internal"},
 				"application_loadbalancer_pool_member_ip_address": []string{terraform.Output(t, existingTerraformOptions, "member_ip_address")},
