@@ -249,7 +249,7 @@ func TestFullyConfigurableSolutionExistingResources(t *testing.T) {
 }
 
 func TestAddonsDefaultConfiguration(t *testing.T) {
-	t.Skip() // See, https://github.ibm.com/ibmcloud/content-catalog/issues/6057
+	t.Parallel()
 
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
 		Testing:   t,
@@ -268,8 +268,16 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 		},
 	)
 
-	//	use existing secrets manager instance to prevent hitting 20 trial instance limit in account
 	options.AddonConfig.Dependencies = []cloudinfo.AddonConfig{
+		// The VPC must be created explicitly because it is disabled by default in the catalog configuration due to this issue(https://github.ibm.com/ibmcloud/content-catalog/issues/6057).
+		{
+			OfferingName:   "deploy-arch-ibm-slz-vpc",
+			OfferingFlavor: "fully-configurable",
+			Inputs: map[string]interface{}{
+				"region": "eu-de",
+			},
+		},
+		//	use existing secrets manager instance to prevent hitting 20 trial instance limit in account
 		{
 			OfferingName:   "deploy-arch-ibm-secrets-manager",
 			OfferingFlavor: "fully-configurable",
@@ -280,7 +288,7 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 				"secret_groups":                        []string{}, // passing empty array for secret groups as default value is creating general group and it will cause conflicts as we are using an existing SM
 			},
 		},
-		// // Disable target / route creation to prevent hitting quota in account
+		// Disable target / route creation to prevent hitting quota in account
 		{
 			OfferingName:   "deploy-arch-ibm-cloud-monitoring",
 			OfferingFlavor: "fully-configurable",
