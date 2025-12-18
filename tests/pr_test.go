@@ -273,6 +273,7 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 		{
 			OfferingName:   "deploy-arch-ibm-slz-vpc",
 			OfferingFlavor: "fully-configurable",
+			Enabled: 	    core.BoolPtr(true),
 			Inputs: map[string]interface{}{
 				"region": "eu-de",
 			},
