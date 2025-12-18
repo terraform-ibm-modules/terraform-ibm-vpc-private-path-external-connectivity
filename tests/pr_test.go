@@ -8,6 +8,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/IBM/go-sdk-core/v5/core"
 	"github.com/gruntwork-io/terratest/modules/files"
 	"github.com/gruntwork-io/terratest/modules/logger"
 	"github.com/gruntwork-io/terratest/modules/random"
@@ -273,7 +274,7 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 		{
 			OfferingName:   "deploy-arch-ibm-slz-vpc",
 			OfferingFlavor: "fully-configurable",
-			Enabled: 	    core.BoolPtr(true),
+			Enabled:        core.BoolPtr(true),
 			Inputs: map[string]interface{}{
 				"region": "eu-de",
 			},
