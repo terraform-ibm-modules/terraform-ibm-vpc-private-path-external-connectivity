@@ -74,13 +74,13 @@ variable "private_path_access_tags" {
 # VPC Variables
 ##############################################################################
 
-variable "existing_vpc_id" {
-  description = "The ID of an existing VPC. If the user provides only the `existing_vpc_id`, the Private Path service will be provisioned in the first subnet."
+variable "existing_vpc_crn" {
   type        = string
+  description = "CRN of the existing VPC in which the VPN infrastructure will be created. If the user provides only the `existing_vpc_crn`, the Private Path service will be provisioned in the first subnet."
   default     = null
   validation {
-    condition     = var.existing_vpc_id == null && var.existing_subnet_id == null ? false : true
-    error_message = "A value for either `existing_vpc_id` or `existing_subnet_id` should be passed."
+    condition     = var.existing_vpc_crn == null && var.existing_subnet_id == null ? false : true
+    error_message = "A value for either `existing_vpc_crn` or `existing_subnet_id` should be passed."
   }
 }
 
@@ -104,18 +104,27 @@ variable "application_loadbalancer_type" {
   type        = string
   default     = "private"
   description = "The type of the application load balancer. Supported values are `private`, `public`."
+  validation {
+    condition     = contains(["private", "public"], var.application_loadbalancer_type)
+    error_message = "Invalid type of application load balancer. Allowed values are 'private', 'public'."
+  }
 }
 
 variable "application_loadbalancer_pool_algorithm" {
   type        = string
   description = "The load-balancing algorithm for Private Path network load balancer pool members. Supported values are `round_robin` or `weighted_round_robin`."
   default     = "round_robin"
+
+  validation {
+    condition     = contains(["round_robin", "weighted_round_robin"], var.application_loadbalancer_pool_algorithm)
+    error_message = "Invalid load-balancing algorithm. Allowed values are 'round_robin', 'weighted_round_robin'."
+  }
 }
 
 variable "application_loadbalancer_pool_member_port" {
   type        = number
   description = "The port where traffic is sent to the instance."
-  default     = 80
+  default     = 443
 }
 
 variable "application_loadbalancer_pool_health_delay" {
@@ -138,45 +147,88 @@ variable "application_loadbalancer_pool_health_timeout" {
 
 variable "application_loadbalancer_pool_health_type" {
   type        = string
-  description = "The protocol used to send health check messages to instances in the pool. Supported values are `tcp` or `http`."
-  default     = "http"
+  description = "The protocol used to send health check messages to instances in the pool. Supported values are `tcp`, `https`."
+  default     = "https"
+  validation {
+    condition     = contains(["tcp", "https"], var.application_loadbalancer_pool_health_type)
+    error_message = "Invalid protocol for health check. Allowed values are 'tcp', 'https'."
+  }
 }
 
 variable "application_loadbalancer_pool_protocol" {
   type        = string
-  description = "The protocol used to send traffic to instances in the pool. Supported values are `tcp`, `http`, `https` or `udp`."
-  default     = "http"
+  description = "The protocol used to send traffic to instances in the pool. Supported values are `tcp`, `https` or `udp`."
+  default     = "https"
+  validation {
+    condition     = contains(["tcp", "https", "udp"], var.application_loadbalancer_pool_protocol)
+    error_message = "Invalid protocol for loadbalancer pool. Allowed values are 'tcp', 'https' or 'udp'."
+  }
 }
 
 variable "application_loadbalancer_listener_port" {
   type        = number
   description = "The listener port for the Private Path network load balancer."
-  default     = 80
+  default     = 443
 }
 
 variable "application_loadbalancer_listener_protocol" {
   type        = string
-  description = "The protocol used to send traffic to instances in the pool. Supported values are `tcp`, `http`, `https` or `udp`."
-  default     = "http"
+  description = "The listener protocol used by instances in the application loadbalancer pool. Supported values are `tcp`, `https` or `udp`."
+  default     = "https"
+  validation {
+    condition     = contains(["tcp", "https", "udp"], var.application_loadbalancer_listener_protocol)
+    error_message = "Invalid listener protocol for application loadbalancer. Allowed values are 'tcp', 'https' or 'udp'."
+  }
 }
 
 variable "application_loadbalancer_listener_idle_timeout" {
   type        = number
-  description = "The protocol used to send traffic to instances in the pool. Supported values are `tcp`, `http`, `https` or `udp`."
+  description = "The idle connection timeout of the listener in seconds."
   default     = 50
 }
 
-variable "application_loadbalancer_listener_certificate_instance" {
+variable "application_loadbalancer_listener_certificate_crn" {
   type        = string
-  description = "The CRN of the certificate in your secret manager, it is applicable(mandatory) only to https protocol."
+  description = "The CRN of existing secrets manager private certificate to use to create application loadbalancer listener. If the value is null, then new private certificate is created. [Learn more](https://cloud.ibm.com/docs/secrets-manager?topic=secrets-manager-certificates&interface=ui)"
   default     = null
 
   validation {
-    condition     = var.application_loadbalancer_listener_protocol == "https" ? var.application_loadbalancer_listener_certificate_instance != null ? true : false : true
-    error_message = "A value must be set for `application_loadbalancer_listener_certificate_instance` when `application_loadbalancer_listener_protocol` is set to `https`."
+    condition     = var.application_loadbalancer_listener_certificate_crn == null ? var.private_cert_engine_config_template_name != null && var.private_cert_engine_config_root_ca_common_name != null : true
+    error_message = "Set 'private_cert_engine_config_root_ca_common_name' and 'private_cert_engine_config_template_name' input variables if a 'application_loadbalancer_listener_certificate_crn' input variable is not set"
+  }
+
+  validation {
+    condition     = var.application_loadbalancer_listener_certificate_crn != null ? var.private_cert_engine_config_template_name == null && var.private_cert_engine_config_root_ca_common_name == null : true
+    error_message = "'private_cert_engine_config_root_ca_common_name' and 'private_cert_engine_config_template_name' input variables can not be set if a 'application_loadbalancer_listener_certificate_crn' input variable is already set"
   }
 }
 
+##############################################################################
+# Secrets Manager resources
+##############################################################################
+
+variable "existing_secrets_manager_instance_crn" {
+  type        = string
+  description = "The CRN of existing secrets manager where the certificate to use for the ALB listener is stored or where the new private certificate will be created. [Learn more](https://cloud.ibm.com/docs/secrets-manager?topic=secrets-manager-getting-started)"
+}
+
+variable "existing_secrets_manager_secret_group_id" {
+  type        = string
+  description = "The ID of existing secrets manager secret group used for new created certificate. If the value is null, then new secrets manager secret group is created. [Learn more](https://cloud.ibm.com/docs/secrets-manager?topic=secrets-manager-secret-groups&interface=ui)"
+  default     = null
+}
+
+variable "private_cert_engine_config_root_ca_common_name" {
+  type        = string
+  description = "A fully qualified domain name or host domain name for the certificate to be created. Required if `application_loadbalancer_listener_certificate_crn` input variable is `null`. [Learn more](https://cloud.ibm.com/docs/secrets-manager?topic=secrets-manager-private-certificates&interface=ui)"
+  default     = null
+}
+
+variable "private_cert_engine_config_template_name" {
+  type        = string
+  description = "The name of the Certificate Template to create for a private certificate secret engine. When `application_loadbalancer_listener_certificate_crn` input variable is `null`, then it has to be the existing template name that exists in the private cert engine. [Learn more](https://cloud.ibm.com/docs/secrets-manager?topic=secrets-manager-private-certificates&interface=ui)"
+  default     = null
+}
 
 ##############################################################################
 # NLB Variables
@@ -191,7 +243,7 @@ variable "network_loadbalancer_name" {
 variable "network_loadbalancer_listener_port" {
   type        = number
   description = "The listener port for the Private Path network load balancer."
-  default     = 80
+  default     = 443
 }
 
 variable "network_loadbalancer_listener_accept_proxy_protocol" {
@@ -226,8 +278,12 @@ variable "network_loadbalancer_pool_health_timeout" {
 
 variable "network_loadbalancer_pool_health_type" {
   type        = string
-  description = "The protocol used to send health check messages to instances in the pool. Supported values are `tcp` or `http`."
+  description = "The protocol used to send health check messages to instances in the pool. Supported values are `tcp` or `https`."
   default     = "tcp"
+  validation {
+    condition     = contains(["tcp", "https"], var.network_loadbalancer_pool_health_type)
+    error_message = "Invalid network loadbalancer health type. Allowed values are 'tcp', 'https'."
+  }
 }
 
 variable "network_loadbalancer_pool_health_monitor_url" {
@@ -239,13 +295,13 @@ variable "network_loadbalancer_pool_health_monitor_url" {
 variable "network_loadbalancer_pool_health_monitor_port" {
   type        = number
   description = "The port on which the load balancer sends health check requests. By default, health checks are sent on the same port where traffic is sent to the instance."
-  default     = 80
+  default     = 443
 }
 
 variable "network_loadbalancer_pool_member_port" {
   type        = number
   description = "The port where traffic is sent to the instance."
-  default     = 80
+  default     = 443
 }
 
 ##############################################################################
@@ -256,6 +312,10 @@ variable "private_path_default_access_policy" {
   type        = string
   description = "The policy to use for bindings from accounts without an explicit account policy. The default policy is set to Review all requests. Supported options are `permit`, `deny`, or `review`."
   default     = "review"
+  validation {
+    condition     = contains(["review", "permit", "deny"], var.private_path_default_access_policy)
+    error_message = "Invalid network loadbalancer health type. Allowed values are 'review', 'permit' or 'deny'."
+  }
 }
 
 variable "private_path_service_endpoints" {
