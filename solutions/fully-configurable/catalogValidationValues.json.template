@@ -4,5 +4,7 @@
   "prefix": $PREFIX,
   "private_path_name": $PREFIX,
   "private_path_service_endpoints": ["vpc-pps.dev.internal"],
-  "existing_secrets_manager_instance_crn": $SM_CRN
+  "existing_secrets_manager_instance_crn": $SM_CRN,
+  "private_cert_engine_config_template_name": $PRIVATE_CERT_TEMPLATE_NAME,
+  "private_cert_engine_config_root_ca_common_name": $DNS_CLOUD_DOMAIN
 }
