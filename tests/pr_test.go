@@ -252,6 +252,15 @@ func TestFullyConfigurableSolutionExistingResources(t *testing.T) {
 func TestAddonsDefaultConfiguration(t *testing.T) {
 	t.Parallel()
 
+	// Verify ibmcloud_api_key variable is set
+	checkVariable := "TF_VAR_ibmcloud_api_key"
+	val, present := os.LookupEnv(checkVariable)
+	require.True(t, present, checkVariable+" environment variable not set")
+	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
+
+	// Programmatically determine region to use based on availability
+	region, _ := testhelper.GetBestVpcRegion(val, "../common-dev-assets/common-go-assets/cloudinfo-region-vpc-gen2-prefs.yaml", "eu-de")
+
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
 		Testing:   t,
 		Prefix:    "pp-vpc",
@@ -263,7 +272,7 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 		"deploy-arch-ibm-is-private-path-ext-conn",
 		"fully-configurable",
 		map[string]interface{}{
-			"region":                         "eu-de",
+			"region":                         region,
 			"secrets_manager_service_plan":   "trial",
 			"private_path_service_endpoints": []string{"vpc-pps.dev.internal"},
 		},
@@ -276,7 +285,7 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 			OfferingFlavor: "fully-configurable",
 			Enabled:        core.BoolPtr(true),
 			Inputs: map[string]interface{}{
-				"region": "eu-de",
+				"region": region,
 			},
 		},
 		//	use existing secrets manager instance to prevent hitting 20 trial instance limit in account
