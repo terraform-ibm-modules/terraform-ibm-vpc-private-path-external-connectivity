@@ -176,7 +176,7 @@ func TestFullyConfigurableSolutionExistingResources(t *testing.T) {
 	// Create SLZ VPC, SM private cert, resource group first
 	// ------------------------------------------------------------------------------------
 
-	prefix := fmt.Sprintf("cts-s-ext-%s", strings.ToLower(random.UniqueId()))
+	prefix := fmt.Sprintf("pp-ext-%s", strings.ToLower(random.UniqueId()))
 	realTerraformDir := "./resources"
 	tempTerraformDir, _ := files.CopyTerraformFolderToTemp(realTerraformDir, fmt.Sprintf(prefix+"-%s", strings.ToLower(random.UniqueId())))
 	tags := common.GetTagsFromTravis()
