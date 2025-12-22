@@ -290,7 +290,17 @@
               "key": "private_path_zonal_affinity"
             },
             {
-              "key": "private_path_account_policies"
+              "key": "private_path_account_policies",
+              "custom_config": {
+                "type": "code_editor",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "supportedLanguages": [
+                    "hcl"
+                  ]
+                }
+              }
             },
             {
               "key": "network_loadbalancer_name"
