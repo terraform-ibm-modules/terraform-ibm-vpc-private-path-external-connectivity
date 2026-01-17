@@ -46,7 +46,7 @@ module "secrets_manager_secret_group" {
 module "secrets_manager_private_certificate" {
   count                  = var.application_loadbalancer_listener_certificate_crn == null ? 1 : 0
   source                 = "terraform-ibm-modules/secrets-manager-private-cert/ibm"
-  version                = "1.10.15"
+  version                = "1.10.16"
   cert_name              = (var.prefix != null && var.prefix != "") ? "${var.prefix}-cts-vpn-private-cert" : "cts-vpn-private-cert"
   cert_description       = "private certificate for client to site VPN connection"
   cert_template          = var.private_cert_engine_config_template_name
