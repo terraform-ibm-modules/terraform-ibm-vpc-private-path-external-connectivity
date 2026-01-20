@@ -258,8 +258,8 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 	require.True(t, present, checkVariable+" environment variable not set")
 	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
 
-	// Programmatically determine region to use based on availability
-	region, _ := testhelper.GetBestVpcRegion(val, "../common-dev-assets/common-go-assets/cloudinfo-region-vpc-gen2-prefs.yaml", "eu-de")
+	// NOTE: Don't use us-east as not supported by Event Notifications
+	region := "eu-de"
 
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
 		Testing:   t,
