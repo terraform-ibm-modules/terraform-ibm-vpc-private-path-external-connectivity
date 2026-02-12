@@ -265,9 +265,10 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 	region := "eu-de"
 
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
-		Testing:   t,
-		Prefix:    "pp-vpc",
-		QuietMode: false, // Suppress logs except on failure
+		Testing:               t,
+		Prefix:                "pp-vpc",
+		QuietMode:             false, // Suppress logs except on failure
+		OverrideInputMappings: core.BoolPtr(true),
 	})
 
 	options.AddonConfig = cloudinfo.NewAddonConfigTerraform(
