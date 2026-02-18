@@ -471,6 +471,7 @@
             },
             {
               "key": "existing_secrets_manager_instance_crn",
+              "display_name": "existing_secrets_manager_instance",
               "required": false,
               "value_constraints": [
                 {
