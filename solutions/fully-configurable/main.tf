@@ -32,7 +32,7 @@ module "application_loadbalancer_listener_certificate_crn_parser" {
 module "secrets_manager_secret_group" {
   count                    = var.application_loadbalancer_listener_certificate_crn == null && var.existing_secrets_manager_secret_group_id == null ? 1 : 0
   source                   = "terraform-ibm-modules/secrets-manager-secret-group/ibm"
-  version                  = "1.4.6"
+  version                  = "1.4.7"
   region                   = module.existing_sm_crn_parser.region
   secrets_manager_guid     = module.existing_sm_crn_parser.service_instance
   secret_group_name        = (var.prefix != null && var.prefix != "") ? "${var.prefix}-cert-secret-group" : "cert-secret-group"
@@ -124,7 +124,7 @@ resource "ibm_is_lb_listener" "alb_frontend_listener" {
 
 module "private_path" {
   source            = "terraform-ibm-modules/vpc-private-path/ibm"
-  version           = "1.6.9"
+  version           = "1.6.10"
   resource_group_id = module.resource_group.resource_group_id
   subnet_id         = local.subnet_id
   tags              = var.private_path_tags
