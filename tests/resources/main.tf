@@ -126,7 +126,7 @@ locals {
 module "existing_sm_crn_parser" {
   count   = var.existing_secrets_manager_instance_crn != null ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.4.2"
+  version = "1.4.3"
   crn     = var.existing_secrets_manager_instance_crn
 }
 
