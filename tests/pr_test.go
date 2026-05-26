@@ -254,7 +254,6 @@ func TestFullyConfigurableSolutionExistingResources(t *testing.T) {
 }
 
 func TestAddonsDefaultConfiguration(t *testing.T) {
-	t.Skip() // To be removed
 	t.Parallel()
 
 	// Verify ibmcloud_api_key variable is set
