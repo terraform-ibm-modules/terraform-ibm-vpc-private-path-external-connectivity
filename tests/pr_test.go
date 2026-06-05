@@ -2,6 +2,7 @@
 package test
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
@@ -56,7 +57,7 @@ func setupFullyConfigurableOptions(t *testing.T, prefix string) (*testschematic.
 	// Create SLZ VPC, resource group first
 	// ------------------------------------------------------------------------------------------------------
 	realTerraformDir := "./resources"
-	tempTerraformDir, _ := files.CopyTerraformFolderToTemp(realTerraformDir, fmt.Sprintf(prefix+"-%s", strings.ToLower(random.UniqueId())))
+	tempTerraformDir, _ := files.CopyTerraformFolderToTemp(realTerraformDir, fmt.Sprintf(prefix+"-%s", strings.ToLower(random.UniqueID())))
 
 	// Verify ibmcloud_api_key variable is set
 	checkVariable := "TF_VAR_ibmcloud_api_key"
@@ -80,8 +81,8 @@ func setupFullyConfigurableOptions(t *testing.T, prefix string) (*testschematic.
 		Upgrade: true,
 	})
 
-	terraform.WorkspaceSelectOrNew(t, existingTerraformOptions, prefix)
-	_, existErr := terraform.InitAndApplyE(t, existingTerraformOptions)
+	terraform.WorkspaceSelectOrNewContext(t, context.Background(), existingTerraformOptions, prefix)
+	_, existErr := terraform.InitAndApplyContextE(t, context.Background(), existingTerraformOptions)
 
 	if existErr != nil {
 		assert.True(t, existErr == nil, "Init and Apply of temp resources (SLZ VPC and Secrets Manager) failed")
@@ -95,7 +96,7 @@ func setupFullyConfigurableOptions(t *testing.T, prefix string) (*testschematic.
 			fullyConfigurableSolutionDir + "/*.*",
 			"*.tf",
 		},
-		ResourceGroup:          terraform.Output(t, existingTerraformOptions, "resource_group_name"),
+		ResourceGroup:          terraform.OutputContext(t, context.Background(), existingTerraformOptions, "resource_group_name"),
 		TemplateFolder:         fullyConfigurableSolutionDir,
 		Tags:                   []string{"test-schematic"},
 		DeleteWorkspaceOnFail:  false,
@@ -105,11 +106,11 @@ func setupFullyConfigurableOptions(t *testing.T, prefix string) (*testschematic.
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
 		{Name: "prefix", Value: prefix, DataType: "string"},
-		{Name: "region", Value: terraform.Output(t, existingTerraformOptions, "region"), DataType: "string"},
-		{Name: "existing_resource_group_name", Value: terraform.Output(t, existingTerraformOptions, "resource_group_name"), DataType: "string"},
-		{Name: "existing_subnet_id", Value: terraform.Output(t, existingTerraformOptions, "existing_subnet_id"), DataType: "string"},
+		{Name: "region", Value: terraform.OutputContext(t, context.Background(), existingTerraformOptions, "region"), DataType: "string"},
+		{Name: "existing_resource_group_name", Value: terraform.OutputContext(t, context.Background(), existingTerraformOptions, "resource_group_name"), DataType: "string"},
+		{Name: "existing_subnet_id", Value: terraform.OutputContext(t, context.Background(), existingTerraformOptions, "existing_subnet_id"), DataType: "string"},
 		{Name: "private_path_service_endpoints", Value: []string{"vpc-pps.dev.internal"}, DataType: "list(string)"},
-		{Name: "application_loadbalancer_pool_member_ip_address", Value: []string{terraform.Output(t, existingTerraformOptions, "member_ip_address")}, DataType: "list(string)"},
+		{Name: "application_loadbalancer_pool_member_ip_address", Value: []string{terraform.OutputContext(t, context.Background(), existingTerraformOptions, "member_ip_address")}, DataType: "list(string)"},
 		{Name: "private_cert_engine_config_root_ca_common_name", Value: fmt.Sprintf("%s%s", options.Prefix, ".com"), DataType: "string"},
 		{Name: "private_cert_engine_config_template_name", Value: permanentResources["privateCertTemplateName"], DataType: "string"},
 		{Name: "existing_secrets_manager_instance_crn", Value: permanentResources["secretsManagerCRN"], DataType: "string"},
@@ -120,7 +121,7 @@ func setupFullyConfigurableOptions(t *testing.T, prefix string) (*testschematic.
 
 func TestRunFullyConfigurableInSchematics(t *testing.T) {
 	t.Parallel()
-	prefix := fmt.Sprintf("ce-pp-%s", strings.ToLower(random.UniqueId()))
+	prefix := fmt.Sprintf("ce-pp-%s", strings.ToLower(random.UniqueID()))
 	options, existingTerraformOptions := setupFullyConfigurableOptions(t, prefix)
 	if options == nil || existingTerraformOptions == nil {
 		t.Fatal("Failed to create agent schematic options (prerequisite Terraform deployment failed)")
@@ -136,8 +137,8 @@ func TestRunFullyConfigurableInSchematics(t *testing.T) {
 		fmt.Println("Terratest failed. Debug the test and delete resources manually.")
 	} else {
 		logger.Log(t, "START: Destroy (existing resources)")
-		terraform.Destroy(t, existingTerraformOptions)
-		terraform.WorkspaceDelete(t, existingTerraformOptions, prefix)
+		terraform.DestroyContext(t, context.Background(), existingTerraformOptions)
+		terraform.WorkspaceDeleteContext(t, context.Background(), existingTerraformOptions, prefix)
 		logger.Log(t, "END: Destroy (existing resources)")
 	}
 }
@@ -146,7 +147,7 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 	t.Parallel()
 
 	// Provision existing resources first
-	prefix := fmt.Sprintf("pp-upg-%s", strings.ToLower(random.UniqueId()))
+	prefix := fmt.Sprintf("pp-upg-%s", strings.ToLower(random.UniqueID()))
 	options, existingTerraformOptions := setupFullyConfigurableOptions(t, prefix)
 
 	if options == nil || existingTerraformOptions == nil {
@@ -166,8 +167,8 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 		fmt.Println("Terratest failed. Debug the test and delete resources manually.")
 	} else {
 		logger.Log(t, "START: Destroy (existing resources)")
-		terraform.Destroy(t, existingTerraformOptions)
-		terraform.WorkspaceDelete(t, existingTerraformOptions, prefix)
+		terraform.DestroyContext(t, context.Background(), existingTerraformOptions)
+		terraform.WorkspaceDeleteContext(t, context.Background(), existingTerraformOptions, prefix)
 		logger.Log(t, "END: Destroy (existing resources)")
 	}
 }
@@ -179,9 +180,9 @@ func TestFullyConfigurableSolutionExistingResources(t *testing.T) {
 	// Create SLZ VPC, SM private cert, resource group first
 	// ------------------------------------------------------------------------------------
 
-	prefix := fmt.Sprintf("pp-ext-%s", strings.ToLower(random.UniqueId()))
+	prefix := fmt.Sprintf("pp-ext-%s", strings.ToLower(random.UniqueID()))
 	realTerraformDir := "./resources"
-	tempTerraformDir, _ := files.CopyTerraformFolderToTemp(realTerraformDir, fmt.Sprintf(prefix+"-%s", strings.ToLower(random.UniqueId())))
+	tempTerraformDir, _ := files.CopyTerraformFolderToTemp(realTerraformDir, fmt.Sprintf(prefix+"-%s", strings.ToLower(random.UniqueID())))
 	tags := common.GetTagsFromTravis()
 
 	// Verify ibmcloud_api_key variable is set
@@ -208,9 +209,9 @@ func TestFullyConfigurableSolutionExistingResources(t *testing.T) {
 		Upgrade: true,
 	})
 
-	terraform.WorkspaceSelectOrNew(t, existingTerraformOptions, prefix)
+	terraform.WorkspaceSelectOrNewContext(t, context.Background(), existingTerraformOptions, prefix)
 
-	_, existErr := terraform.InitAndApplyE(t, existingTerraformOptions)
+	_, existErr := terraform.InitAndApplyContextE(t, context.Background(), existingTerraformOptions)
 	if existErr != nil {
 		assert.True(t, existErr == nil, "Init and Apply of temp existing resource failed")
 	} else {
@@ -224,13 +225,13 @@ func TestFullyConfigurableSolutionExistingResources(t *testing.T) {
 			ImplicitRequired: false,
 			TerraformVars: map[string]interface{}{
 				"prefix":                       prefix,
-				"existing_resource_group_name": terraform.Output(t, existingTerraformOptions, "resource_group_name"),
-				"region":                       terraform.Output(t, existingTerraformOptions, "region"),
-				"application_loadbalancer_listener_certificate_crn": terraform.Output(t, existingTerraformOptions, "sm_private_cert_crn"),
-				"existing_subnet_id":                              terraform.Output(t, existingTerraformOptions, "existing_subnet_id"),
+				"existing_resource_group_name": terraform.OutputContext(t, context.Background(), existingTerraformOptions, "resource_group_name"),
+				"region":                       terraform.OutputContext(t, context.Background(), existingTerraformOptions, "region"),
+				"application_loadbalancer_listener_certificate_crn": terraform.OutputContext(t, context.Background(), existingTerraformOptions, "sm_private_cert_crn"),
+				"existing_subnet_id":                              terraform.OutputContext(t, context.Background(), existingTerraformOptions, "existing_subnet_id"),
 				"existing_secrets_manager_instance_crn":           permanentResources["secretsManagerCRN"],
 				"private_path_service_endpoints":                  []string{"vpc-pps.dev.internal"},
-				"application_loadbalancer_pool_member_ip_address": []string{terraform.Output(t, existingTerraformOptions, "member_ip_address")},
+				"application_loadbalancer_pool_member_ip_address": []string{terraform.OutputContext(t, context.Background(), existingTerraformOptions, "member_ip_address")},
 				"provider_visibility":                             "public",
 			},
 		})
@@ -246,8 +247,8 @@ func TestFullyConfigurableSolutionExistingResources(t *testing.T) {
 		fmt.Println("Terratest failed. Debug the test and delete resources manually.")
 	} else {
 		logger.Log(t, "START: Destroy (existing resources)")
-		terraform.Destroy(t, existingTerraformOptions)
-		terraform.WorkspaceDelete(t, existingTerraformOptions, prefix)
+		terraform.DestroyContext(t, context.Background(), existingTerraformOptions)
+		terraform.WorkspaceDeleteContext(t, context.Background(), existingTerraformOptions, prefix)
 		logger.Log(t, "END: Destroy (existing resources)")
 	}
 }
