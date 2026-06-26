@@ -114,11 +114,6 @@ resource "ibm_is_subnet" "provider_subnet" {
   tags            = var.resource_tags
 }
 
-resource "time_sleep" "wait_for_auth_policy" {
-  depends_on      = [ibm_is_subnet.provider_subnet]
-  create_duration = "30s"
-}
-
 #################################################################################
 # Secrets Manager resources
 #################################################################################
