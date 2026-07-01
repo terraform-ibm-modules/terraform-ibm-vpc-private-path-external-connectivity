@@ -127,7 +127,7 @@ module "private_path" {
   version           = "1.8.0"
   resource_group_id = module.resource_group.resource_group_id
   subnet_id         = local.subnet_id
-  tags              = var.private_path_tags
+  resource_tags     = var.private_path_tags
   access_tags       = var.private_path_access_tags
   nlb_name          = local.network_loadbalancer_name
   nlb_backend_pools = [
