@@ -124,7 +124,7 @@ resource "ibm_is_lb_listener" "alb_frontend_listener" {
 
 module "private_path" {
   source            = "terraform-ibm-modules/vpc-private-path/ibm"
-  version           = "1.9.2"
+  version           = "1.10.1"
   resource_group_id = module.resource_group.resource_group_id
   subnet_id         = local.subnet_id
   resource_tags     = var.private_path_tags
