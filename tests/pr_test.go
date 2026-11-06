@@ -319,6 +319,15 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 				"enable_activity_tracker_event_routing_to_cloud_logs": false,
 			},
 		},
+		// The private cert engine v2 creates the template as "<prefix>-<name>" (default name "template"),
+		// and cert_template is a required input of the private cert DA that is not mapped from the engine.
+		{
+			OfferingName:   "deploy-arch-secrets-manager-private-cert",
+			OfferingFlavor: "fully-configurable",
+			Inputs: map[string]interface{}{
+				"cert_template": fmt.Sprintf("%s-template", options.Prefix),
+			},
+		},
 	}
 
 	err := options.RunAddonTest()
