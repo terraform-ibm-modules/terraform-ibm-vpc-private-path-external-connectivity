@@ -123,6 +123,9 @@ resource "ibm_is_lb_listener" "alb_frontend_listener" {
 ########################################################################################################################
 
 module "private_path" {
+  # The ALB and the private path NLB are created in the same subnet. Create the ALB first, otherwise the
+  # concurrent creation can fail with "subnet is invalid"
+  depends_on        = [ibm_is_lb.alb]
   source            = "terraform-ibm-modules/vpc-private-path/ibm"
   version           = "1.10.2"
   resource_group_id = module.resource_group.resource_group_id

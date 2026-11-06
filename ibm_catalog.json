@@ -533,20 +533,21 @@
               "description": "The common name of the Intermediate Certificate Authority you want to create."
             },
             {
-              "key": "certificate_template_name",
-              "type": "string",
+              "key": "certificate_templates",
               "required": false,
               "virtual": true,
-              "default_value": "template",
-              "description": "The name of the Certificate Template you want to create."
-            },
-            {
-              "key": "template_max_ttl",
-              "type": "string",
-              "required": false,
-              "virtual": true,
-              "default_value": "8760h",
-              "description": "Max TTL for the certificate template you want to create."
+              "default_value": "[{\"name\": \"template\"}]",
+              "description": "The certificate templates to create. Each name is prefixed with `prefix`, and `cert_template` must match one of the full names.",
+              "custom_config": {
+                "type": "code_editor",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "supportedLanguages": [
+                    "hcl"
+                  ]
+                }
+              }
             },
             {
               "key": "provider_visibility",
@@ -730,13 +731,8 @@
                   "reference_version": true
                 },
                 {
-                  "dependency_input": "certificate_template_name",
-                  "version_input": "certificate_template_name",
-                  "reference_version": true
-                },
-                {
-                  "dependency_input": "template_max_ttl",
-                  "version_input": "template_max_ttl",
+                  "dependency_input": "certificate_templates",
+                  "version_input": "certificate_templates",
                   "reference_version": true
                 },
                 {
