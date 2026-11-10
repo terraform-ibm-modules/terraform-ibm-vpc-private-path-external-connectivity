@@ -298,9 +298,6 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 			OfferingName:   "deploy-arch-ibm-slz-vpc",
 			OfferingFlavor: "fully-configurable",
 			Enabled:        core.BoolPtr(true),
-			Inputs: map[string]interface{}{
-				"region": region,
-			},
 		},
 		//	use existing secrets manager instance to prevent hitting 20 trial instance limit in account
 		{
