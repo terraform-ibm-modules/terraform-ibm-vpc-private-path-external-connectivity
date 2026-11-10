@@ -266,23 +266,29 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 	region := "eu-de"
 
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
-		Testing:               t,
-		Prefix:                "pp-vpc",
-		QuietMode:             false, // Suppress logs except on failure
-		OverrideInputMappings: core.BoolPtr(true),
+		Testing:   t,
+		Prefix:    "pp-vpc",
+		QuietMode: false, // Suppress logs except on failure
 	})
+
+	// use unique resource group to prevent s2s auth policy clash
+	uniqueResourceGroup := fmt.Sprintf("%s-%s", options.Prefix, strings.ToLower(random.UniqueID()))
 
 	options.AddonConfig = cloudinfo.NewAddonConfigTerraform(
 		options.Prefix,
 		"deploy-arch-ibm-is-private-path-ext-conn",
 		"fully-configurable",
 		map[string]interface{}{
-			// prefix must be set explicitly: it is shared with the private cert engine dependency, which names
-			// the template "<prefix>-template" (see cert_template below). Without this it defaults to a random value.
-			"prefix":                         options.Prefix,
 			"region":                         region,
 			"secrets_manager_service_plan":   "trial",
 			"private_path_service_endpoints": []string{"vpc-pps.dev.internal"},
+			"existing_resource_group_name":   uniqueResourceGroup,
+			"root_ca_name":                   "root-ca",
+			"root_ca_common_name":            fmt.Sprintf("%s-root.com", options.Prefix),
+			"intermediate_ca_name":           "intermediate-ca",
+			"intermediate_ca_common_name":    fmt.Sprintf("%s-int.com", options.Prefix),
+			"certificate_template_name":      "template",
+			"template_max_ttl":               "8760h",
 		},
 	)
 
@@ -333,6 +339,8 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 		},
 	}
 
-	err := options.RunAddonTest()
+	err := sharedInfoSvc.WithNewResourceGroup(uniqueResourceGroup, func() error {
+		return options.RunAddonTest()
+	})
 	require.NoError(t, err)
 }
