@@ -266,13 +266,11 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 	region := "eu-de"
 
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
-		Testing:   t,
-		Prefix:    "pp-vpc",
-		QuietMode: false, // Suppress logs except on failure
+		Testing:               t,
+		Prefix:                "pp-vpc",
+		QuietMode:             false, // Suppress logs except on failure
+		OverrideInputMappings: core.BoolPtr(true),
 	})
-
-	// use unique resource group to prevent s2s auth policy clash
-	uniqueResourceGroup := fmt.Sprintf("%s-%s", options.Prefix, strings.ToLower(random.UniqueID()))
 
 	options.AddonConfig = cloudinfo.NewAddonConfigTerraform(
 		options.Prefix,
@@ -282,7 +280,6 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 			"region":                         region,
 			"secrets_manager_service_plan":   "trial",
 			"private_path_service_endpoints": []string{"vpc-pps.dev.internal"},
-			"existing_resource_group_name":   uniqueResourceGroup,
 			"root_ca_name":                   "root-ca",
 			"root_ca_common_name":            fmt.Sprintf("%s-root.com", options.Prefix),
 			"intermediate_ca_name":           "intermediate-ca",
@@ -336,8 +333,6 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 		},
 	}
 
-	err := sharedInfoSvc.WithNewResourceGroup(uniqueResourceGroup, func() error {
-		return options.RunAddonTest()
-	})
+	err := options.RunAddonTest()
 	require.NoError(t, err)
 }
