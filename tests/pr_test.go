@@ -284,8 +284,6 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 			"root_ca_common_name":            fmt.Sprintf("%s-root.com", options.Prefix),
 			"intermediate_ca_name":           "intermediate-ca",
 			"intermediate_ca_common_name":    fmt.Sprintf("%s-int.com", options.Prefix),
-			"certificate_template_name":      "template",
-			"template_max_ttl":               "8760h",
 		},
 	)
 

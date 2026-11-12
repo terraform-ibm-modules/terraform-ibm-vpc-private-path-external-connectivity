@@ -693,7 +693,7 @@
                 },
                 {
                   "dependency_output": "secrets_manager_crn",
-                  "version_input": "existing_secrets_manager_instance_crn"
+                  "version_input": "existing_secrets_manager_crn"
                 },
                 {
                   "dependency_input": "prefix",
@@ -702,7 +702,7 @@
                 },
                 {
                   "dependency_input": "secrets_manager_region",
-                  "version_input": "region",
+                  "version_input": "secrets_manager_region",
                   "reference_version": true
                 },
                 {
