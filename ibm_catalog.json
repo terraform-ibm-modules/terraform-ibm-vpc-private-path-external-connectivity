@@ -701,7 +701,7 @@
                   "reference_version": true
                 },
                 {
-                  "dependency_input": "secrets_manager_region",
+                  "dependency_input": "region",
                   "version_input": "secrets_manager_region",
                   "reference_version": true
                 },
