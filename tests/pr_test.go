@@ -277,6 +277,7 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 		"deploy-arch-ibm-is-private-path-ext-conn",
 		"fully-configurable",
 		map[string]interface{}{
+			"prefix":                         options.Prefix, // shared via reference with the private cert dependency and engine so the template names match cert_template below
 			"region":                         region,
 			"secrets_manager_service_plan":   "trial",
 			"private_path_service_endpoints": []string{"vpc-pps.dev.internal"},
