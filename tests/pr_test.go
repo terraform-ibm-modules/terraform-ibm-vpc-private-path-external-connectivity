@@ -277,9 +277,14 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 		"deploy-arch-ibm-is-private-path-ext-conn",
 		"fully-configurable",
 		map[string]interface{}{
+			"prefix":                         options.Prefix, // shared via reference with the private cert dependency and engine so the template names match cert_template below
 			"region":                         region,
 			"secrets_manager_service_plan":   "trial",
 			"private_path_service_endpoints": []string{"vpc-pps.dev.internal"},
+			"root_ca_name":                   "root-ca",
+			"root_ca_common_name":            fmt.Sprintf("%s-root.com", options.Prefix),
+			"intermediate_ca_name":           "intermediate-ca",
+			"intermediate_ca_common_name":    fmt.Sprintf("%s-int.com", options.Prefix),
 		},
 	)
 
@@ -289,9 +294,6 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 			OfferingName:   "deploy-arch-ibm-slz-vpc",
 			OfferingFlavor: "fully-configurable",
 			Enabled:        core.BoolPtr(true),
-			Inputs: map[string]interface{}{
-				"region": region,
-			},
 		},
 		//	use existing secrets manager instance to prevent hitting 20 trial instance limit in account
 		{
@@ -317,6 +319,15 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 			OfferingFlavor: "fully-configurable",
 			Inputs: map[string]interface{}{
 				"enable_activity_tracker_event_routing_to_cloud_logs": false,
+			},
+		},
+		// The private cert engine v2 creates the template as "<prefix>-<name>" (default name "template"),
+		// and cert_template is a required input of the private cert DA that is not mapped from the engine.
+		{
+			OfferingName:   "deploy-arch-secrets-manager-private-cert",
+			OfferingFlavor: "fully-configurable",
+			Inputs: map[string]interface{}{
+				"cert_template": fmt.Sprintf("%s-template", options.Prefix),
 			},
 		},
 	}

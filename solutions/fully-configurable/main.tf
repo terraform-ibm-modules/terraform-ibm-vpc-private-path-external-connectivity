@@ -32,7 +32,7 @@ module "application_loadbalancer_listener_certificate_crn_parser" {
 module "secrets_manager_secret_group" {
   count                    = var.application_loadbalancer_listener_certificate_crn == null && var.existing_secrets_manager_secret_group_id == null ? 1 : 0
   source                   = "terraform-ibm-modules/secrets-manager-secret-group/ibm"
-  version                  = "1.5.9"
+  version                  = "1.5.11"
   region                   = module.existing_sm_crn_parser.region
   secrets_manager_guid     = module.existing_sm_crn_parser.service_instance
   secret_group_name        = (var.prefix != null && var.prefix != "") ? "${var.prefix}-cert-secret-group" : "cert-secret-group"
@@ -46,7 +46,7 @@ module "secrets_manager_secret_group" {
 module "secrets_manager_private_certificate" {
   count                  = var.application_loadbalancer_listener_certificate_crn == null ? 1 : 0
   source                 = "terraform-ibm-modules/secrets-manager-private-cert/ibm"
-  version                = "1.12.15"
+  version                = "1.12.17"
   cert_name              = (var.prefix != null && var.prefix != "") ? "${var.prefix}-cts-vpn-private-cert" : "cts-vpn-private-cert"
   cert_description       = "private certificate for client to site VPN connection"
   cert_template          = var.private_cert_engine_config_template_name
@@ -123,6 +123,9 @@ resource "ibm_is_lb_listener" "alb_frontend_listener" {
 ########################################################################################################################
 
 module "private_path" {
+  # The ALB and the private path NLB are created in the same subnet. Create the ALB first, otherwise the
+  # concurrent creation can fail with "subnet is invalid"
+  depends_on        = [ibm_is_lb.alb]
   source            = "terraform-ibm-modules/vpc-private-path/ibm"
   version           = "1.10.2"
   resource_group_id = module.resource_group.resource_group_id
