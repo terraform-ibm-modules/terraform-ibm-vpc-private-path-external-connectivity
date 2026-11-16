@@ -533,6 +533,13 @@
               "description": "The common name of the Intermediate Certificate Authority you want to create."
             },
             {
+              "key": "cert_template",
+              "type": "string",
+              "required": false,
+              "virtual": true,
+              "description": "The name of the certificate template used to create the ALB listener certificate. The private certificate engine creates templates named `<prefix>-<name>` (default `<prefix>-template`), so set this to one of those full names."
+            },
+            {
               "key": "certificate_templates",
               "required": false,
               "virtual": true,
@@ -728,6 +735,11 @@
                 {
                   "dependency_input": "intermediate_ca_common_name",
                   "version_input": "intermediate_ca_common_name",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "cert_template",
+                  "version_input": "cert_template",
                   "reference_version": true
                 },
                 {
