@@ -114,6 +114,7 @@ func setupFullyConfigurableOptions(t *testing.T, prefix string) (*testschematic.
 		{Name: "private_cert_engine_config_root_ca_common_name", Value: fmt.Sprintf("%s%s", options.Prefix, ".com"), DataType: "string"},
 		{Name: "private_cert_engine_config_template_name", Value: permanentResources["privateCertTemplateName"], DataType: "string"},
 		{Name: "existing_secrets_manager_instance_crn", Value: permanentResources["secretsManagerCRN"], DataType: "string"},
+		{Name: "provider_visibility", Value: "public", DataType: "string"},
 	}
 
 	return options, existingTerraformOptions
@@ -293,6 +294,11 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 		// The VPC must be created explicitly because it is disabled by default in the catalog configuration due to this issue(https://github.ibm.com/ibmcloud/content-catalog/issues/6057).
 		{
 			OfferingName:   "deploy-arch-ibm-slz-vpc",
+			OfferingFlavor: "fully-configurable",
+			Enabled:        core.BoolPtr(true),
+		},
+		{
+			OfferingName:   "deploy-arch-secrets-manager-private-cert",
 			OfferingFlavor: "fully-configurable",
 			Enabled:        core.BoolPtr(true),
 		},
