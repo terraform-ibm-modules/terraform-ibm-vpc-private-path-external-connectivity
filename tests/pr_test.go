@@ -114,6 +114,7 @@ func setupFullyConfigurableOptions(t *testing.T, prefix string) (*testschematic.
 		{Name: "private_cert_engine_config_root_ca_common_name", Value: fmt.Sprintf("%s%s", options.Prefix, ".com"), DataType: "string"},
 		{Name: "private_cert_engine_config_template_name", Value: permanentResources["privateCertTemplateName"], DataType: "string"},
 		{Name: "existing_secrets_manager_instance_crn", Value: permanentResources["secretsManagerCRN"], DataType: "string"},
+		{Name: "provider_visibility", Value: "public", DataType: "string"},
 	}
 
 	return options, existingTerraformOptions
@@ -277,9 +278,15 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 		"deploy-arch-ibm-is-private-path-ext-conn",
 		"fully-configurable",
 		map[string]interface{}{
+			"prefix":                         options.Prefix,                             // shared via reference with the private cert dependency and engine so the template names match cert_template below
+			"cert_template":                  fmt.Sprintf("%s-template", options.Prefix), // mapped to the private cert dependency; the private cert engine names the template "<prefix>-template"
 			"region":                         region,
 			"secrets_manager_service_plan":   "trial",
 			"private_path_service_endpoints": []string{"vpc-pps.dev.internal"},
+			"root_ca_name":                   "root-ca",
+			"root_ca_common_name":            fmt.Sprintf("%s-root.com", options.Prefix),
+			"intermediate_ca_name":           "intermediate-ca",
+			"intermediate_ca_common_name":    fmt.Sprintf("%s-int.com", options.Prefix),
 		},
 	)
 
@@ -289,9 +296,6 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 			OfferingName:   "deploy-arch-ibm-slz-vpc",
 			OfferingFlavor: "fully-configurable",
 			Enabled:        core.BoolPtr(true),
-			Inputs: map[string]interface{}{
-				"region": region,
-			},
 		},
 		//	use existing secrets manager instance to prevent hitting 20 trial instance limit in account
 		{
