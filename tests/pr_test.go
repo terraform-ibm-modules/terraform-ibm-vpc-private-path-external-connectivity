@@ -297,11 +297,6 @@ func TestAddonsDefaultConfiguration(t *testing.T) {
 			OfferingFlavor: "fully-configurable",
 			Enabled:        core.BoolPtr(true),
 		},
-		{
-			OfferingName:   "deploy-arch-secrets-manager-private-cert",
-			OfferingFlavor: "fully-configurable",
-			Enabled:        core.BoolPtr(true),
-		},
 		//	use existing secrets manager instance to prevent hitting 20 trial instance limit in account
 		{
 			OfferingName:   "deploy-arch-ibm-secrets-manager",
